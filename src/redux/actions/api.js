@@ -1,9 +1,8 @@
-export const API_REQUEST = "[weatherApp] API Request";
+export const API_REQUEST = "[Api] API Request";
 
-export const apiRequest = (method, url, body, onSuccess, onError) => {
+export const apiRequest = (method, url, body, params, onSuccess, onError) => {
   return {
     type: API_REQUEST,
-    payload: body,
-    meta: { method, url, onSuccess, onError },
+    meta: { method, url, body, params, onSuccess, onError },
   };
 };

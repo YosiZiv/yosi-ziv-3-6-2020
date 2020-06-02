@@ -5,15 +5,25 @@ import { axios } from "../../axios";
 export const api = ({ dispatch }) => (next) => (action) => {
   if (action.type === API_REQUEST) {
     dispatch(loadingStart());
-    const { method, url, onSuccess, onError } = action.meta;
-    axios[method](url, action.payload)
+    const {
+      method = "get",
+      url,
+      body = null,
+      params = null,
+      onSuccess,
+      onError,
+    } = action.meta;
+    axios({ method, url, params })
       .then((response) => {
+        console.log(response);
         dispatch(loadingFinish());
-        dispatch({ type: onSuccess, payload: response.data });
+        // dispatch({ type: onSuccess, payload: response.data });
       })
       .catch((error) => {
+        console.log(error);
+
         dispatch(loadingFinish());
-        dispatch({ type: onError, payload: error.response.data.errors });
+        dispatch({ type: onError, payload: error.response });
       });
   }
   return next(action);
