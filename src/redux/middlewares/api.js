@@ -17,7 +17,7 @@ export const api = ({ dispatch }) => (next) => (action) => {
       .then((response) => {
         console.log(response);
         dispatch(loadingFinish());
-        // dispatch({ type: onSuccess, payload: response.data });
+        dispatch({ type: onSuccess, payload: response.data });
       })
       .catch((error) => {
         console.log(error);
@@ -26,5 +26,5 @@ export const api = ({ dispatch }) => (next) => (action) => {
         dispatch({ type: onError, payload: error.response });
       });
   }
-  return next(action);
+  next(action);
 };
