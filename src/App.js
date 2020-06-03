@@ -1,15 +1,18 @@
 import React, { useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
-import { getCity } from "./redux/actions/weather-actions";
 import Navigation from "./components/Navigation";
 import Weather from "./pages/Weather";
 import Favorites from "./pages/Favorites";
 import "./App.css";
 
-function App({ getCity }) {
+function App({}) {
   useEffect(() => {
-    getCity();
+    let searchResult = localStorage.getItem("searchResult");
+    if (!searchResult) {
+      searchResult = {};
+      return localStorage.setItem("searchResult", JSON.stringify(searchResult));
+    }
   }, []);
   const routes = (
     <Switch>
@@ -26,4 +29,4 @@ function App({ getCity }) {
   );
 }
 
-export default connect(null, { getCity })(App);
+export default connect(null, {})(App);
