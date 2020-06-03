@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export default function Navigation() {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <Link to="/" className="navbar-brand">
+      <Link className="navbar-brand" to="/">
         WeatherApp
       </Link>
       <button
@@ -19,8 +19,8 @@ export default function Navigation() {
       </button>
       <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div className="navbar-nav">
-          <Link to="/weather">
-            <a className="nav-item nav-link">Weather</a>
+          <Link className="nav-item nav-link" to="/weather">
+            Weather
           </Link>
           <Link to="/favorites" className="nav-item nav-link">
             Favorites
