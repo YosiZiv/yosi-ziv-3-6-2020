@@ -1,13 +1,11 @@
 import React from "react";
 
-const AutoComplate = ({ searchResult, onClick }) => {
-  console.log(searchResult);
-
+const AutoComplete = ({ searchResult, onClick }) => {
   const cities = searchResult.length
     ? searchResult.map((item) => {
         const { key, city } = item;
         return (
-          <li onClick={() => onClick(key)} key={key} id={key}>
+          <li onClick={() => onClick(key, city)} key={key} id={key}>
             {city}
           </li>
         );
@@ -16,4 +14,4 @@ const AutoComplate = ({ searchResult, onClick }) => {
 
   return <div>{cities}</div>;
 };
-export default AutoComplate;
+export default AutoComplete;
