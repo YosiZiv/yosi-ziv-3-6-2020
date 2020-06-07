@@ -1,22 +1,34 @@
 import {
   FORM_CITY_INPUT_CHANGE,
-  FORM_SET_CITIES,
   SET_SEARCH_CACHE,
   SET_SEARCH_RESULT,
+  SET_CITY_FORECASTS_CACHE,
   SET_CITY_FORECASTS,
+  SET_CITY_CONDITION,
+  formCityInputChange,
 } from "../actions/weather-actions";
 
-const saveResultToLocalStorage = (key, data) => {
+const saveSearchCache = (key, data) => {
   const searchCache = JSON.parse(localStorage.getItem("searchCache"));
   searchCache[key] = data;
   localStorage.setItem("searchCache", JSON.stringify(searchCache));
   return searchCache;
 };
+const saveForecastsCache = (key, data) => {
+  const forecastsCache = JSON.parse(localStorage.getItem("forecastsCache"));
+  forecastsCache[key] = data;
+  localStorage.setItem("forecastsCache", JSON.stringify(forecastsCache));
+  return forecastsCache;
+};
 const initState = {
-  city: { value: "", error: null },
+  searchCity: { value: "", error: null },
   searchCache: {},
+  forecastsCache: {},
   searchResult: [],
-  cityForecasts: null,
+  city: {
+    cityCondition: null,
+    cityForecasts: null,
+  },
 };
 
 export default function weatherReducer(state = initState, action) {
@@ -24,17 +36,16 @@ export default function weatherReducer(state = initState, action) {
     case FORM_CITY_INPUT_CHANGE: {
       return {
         ...state,
-        city: {
+        searchCity: {
           value: action.payload.value,
         },
       };
     }
-    case FORM_SET_CITIES: {
+    case SET_SEARCH_RESULT: {
       const { data, cache } = action.payload;
       let searchCache;
       if (cache) {
-        searchCache = saveResultToLocalStorage(state.city.value, data);
-        console.log(searchCache);
+        searchCache = saveSearchCache(state.searchCity.value, data);
       }
       return {
         ...state,
@@ -46,27 +57,30 @@ export default function weatherReducer(state = initState, action) {
       const searchCache = action.payload;
       return { ...state, searchCache };
     }
+    case SET_CITY_FORECASTS_CACHE: {
+      const forecastsCache = action.payload;
+      return { ...state, forecastsCache };
+    }
     case SET_CITY_FORECASTS: {
-      const cityForecasts = action.payload;
-      return { ...state, cityForecasts };
+      const { data, cache } = action.payload;
+      let forecastsCache;
+      if (cache) {
+        forecastsCache = saveForecastsCache(state.searchCity.value, data);
+      }
+      return {
+        ...state,
+        forecastsCache: forecastsCache || state.forecastsCache,
+        city: {
+          ...state.city,
+          cityForecasts: data,
+        },
+      };
+    }
+    case SET_CITY_CONDITION: {
+      const cityCondition = action.payload;
+      return { ...state, city: { ...state.city, cityCondition } };
     }
     default:
       return state;
   }
 }
-// case SET_CURRENT_CITY: {
-//   console.log("got in the reducer", action.payload);
-
-//   return {
-//     ...state,
-//     currentCity: action.payload,
-//   };
-// }
-// case SET_SEARCH_RESULT: {
-//   console.log(action.payload);
-
-//   return {
-//     ...state,
-//     searchResult: action.payload,
-//   };
-// }
