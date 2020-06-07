@@ -1,20 +1,23 @@
 import React from "react";
 import { connect } from "react-redux";
 import Input from "../components/Input";
+import AutoComplate from "../components/AutoComplate";
 import {
   formCityInputChange,
   getCities,
   formSetCities,
+  getCityForecasts,
 } from "../redux/actions/weather-actions";
 const WeatherPage = ({
+  searchCache,
   formCityInputChange,
-  getCities,
   formSetCities,
+  searchResult,
   city,
+  getCities,
+  getCityForecasts,
 }) => {
-  let searchResult = JSON.parse(localStorage.getItem("searchResult"));
-  console.log(searchResult);
-
+  console.log(searchCache);
   const validation = {
     city: {
       required: true,
@@ -23,13 +26,16 @@ const WeatherPage = ({
   };
   const onChange = (e) => {
     formCityInputChange({ value: e.target.value, validation: validation.city });
-    if (searchResult[e.target.value]) {
-      console.log("i get cached");
-      return formSetCities(searchResult[e.target.value]);
+    if (searchCache[e.target.value]) {
+      return formSetCities({ data: searchCache[e.target.value], cache: false });
     }
     getCities(e.target.value);
     // searchResult[e.target.value] = e.target.value;
     // localStorage.setItem("searchResult", JSON.stringify(searchResult));
+  };
+  const onCitySelect = (key) => {
+    console.log(key);
+    getCityForecasts(key);
   };
   return (
     <div>
@@ -45,17 +51,22 @@ const WeatherPage = ({
             value={city.value}
             onChange={onChange}
           />
+          <AutoComplate searchResult={searchResult} onClick={onCitySelect} />
         </form>
       </div>
     </div>
   );
 };
-const mapStateToProps = ({ weatherReducer: { city } }) => {
-  return { city };
+
+const mapStateToProps = ({
+  weatherReducer: { city, searchCache, searchResult },
+}) => {
+  return { city, searchCache, searchResult };
 };
 
 export default connect(mapStateToProps, {
   formCityInputChange,
   getCities,
   formSetCities,
+  getCityForecasts,
 })(WeatherPage);
