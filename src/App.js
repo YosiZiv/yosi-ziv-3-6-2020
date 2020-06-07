@@ -4,17 +4,25 @@ import { connect } from "react-redux";
 import Navigation from "./components/Navigation";
 import Weather from "./pages/Weather";
 import Favorites from "./pages/Favorites";
-import { setSearchCache } from ".//redux/actions/weather-actions";
+import {
+  setSearchCache,
+  setCityForecastsCache,
+} from ".//redux/actions/weather-actions";
 import "./App.css";
 
-function App({ setSearchCache }) {
+function App({ setSearchCache, setCityForecastsCache }) {
   useEffect(() => {
     let searchCache = JSON.parse(localStorage.getItem("searchCache")) || {};
-    console.log(searchCache);
+    let forecastsCache =
+      JSON.parse(localStorage.getItem("forecastsCache")) || {};
     if (!searchCache.length) {
       localStorage.setItem("searchCache", JSON.stringify(searchCache));
     }
+    if (!forecastsCache.length) {
+      localStorage.setItem("forecastsCache", JSON.stringify(forecastsCache));
+    }
     setSearchCache(searchCache);
+    setCityForecastsCache(forecastsCache);
   }, []);
   const routes = (
     <Switch>
@@ -30,4 +38,4 @@ function App({ setSearchCache }) {
     </div>
   );
 }
-export default connect(null, { setSearchCache })(App);
+export default connect(null, { setSearchCache, setCityForecastsCache })(App);
