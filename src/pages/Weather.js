@@ -1,23 +1,29 @@
 import React from "react";
 import { connect } from "react-redux";
 import Input from "../components/Input";
-import AutoComplate from "../components/AutoComplate";
+import AutoComplete from "../components/AutoComplete";
+import CityForecasts from "../components/CityForecasts";
 import {
   formCityInputChange,
   getCities,
-  formSetCities,
   getCityForecasts,
+  setCityForecasts,
+  setSearchResult,
 } from "../redux/actions/weather-actions";
 const WeatherPage = ({
   searchCache,
-  formCityInputChange,
-  formSetCities,
+  forecastsCache,
   searchResult,
+  searchCity,
+  setSearchResult,
   city,
   getCities,
+  formCityInputChange,
   getCityForecasts,
+  setCityForecasts,
 }) => {
-  console.log(searchCache);
+  console.log("123", searchCity);
+
   const validation = {
     city: {
       required: true,
@@ -27,15 +33,27 @@ const WeatherPage = ({
   const onChange = (e) => {
     formCityInputChange({ value: e.target.value, validation: validation.city });
     if (searchCache[e.target.value]) {
-      return formSetCities({ data: searchCache[e.target.value], cache: false });
+      return setSearchResult({
+        data: searchCache[e.target.value],
+        cache: false,
+      });
     }
-    getCities(e.target.value);
+    return getCities(e.target.value);
     // searchResult[e.target.value] = e.target.value;
     // localStorage.setItem("searchResult", JSON.stringify(searchResult));
   };
-  const onCitySelect = (key) => {
-    console.log(key);
-    getCityForecasts(key);
+  const onCitySelect = (key, city) => {
+    console.log(key, city);
+    formCityInputChange({ value: city, validation: validation.city });
+    setSearchResult({ data: [], cache: false });
+    if (forecastsCache[city]) {
+      return setCityForecasts({
+        city,
+        data: forecastsCache[city],
+        cache: false,
+      });
+    }
+    return getCityForecasts({ key, city });
   };
   return (
     <div>
@@ -46,27 +64,43 @@ const WeatherPage = ({
             id="city"
             name="City"
             type="text"
-            error={city.error}
+            error={searchCity.error}
             required
-            value={city.value}
+            value={searchCity.value}
             onChange={onChange}
           />
-          <AutoComplate searchResult={searchResult} onClick={onCitySelect} />
+          <AutoComplete searchResult={searchResult} onClick={onCitySelect} />
         </form>
       </div>
+      {city.cityForecasts && (
+        <div>
+          <CityForecasts
+            cityName={searchCity.value}
+            cityForecasts={city.cityForecasts}
+          />
+        </div>
+      )}
     </div>
   );
 };
 
 const mapStateToProps = ({
-  weatherReducer: { city, searchCache, searchResult },
+  weatherReducer: {
+    searchCity,
+    searchCache,
+    forecastsCache,
+    searchResult,
+    city,
+  },
 }) => {
-  return { city, searchCache, searchResult };
+  return { searchCity, searchCache, forecastsCache, searchResult, city };
 };
 
 export default connect(mapStateToProps, {
   formCityInputChange,
   getCities,
-  formSetCities,
+  setSearchResult,
   getCityForecasts,
+  setCityForecasts,
+  setSearchResult,
 })(WeatherPage);
