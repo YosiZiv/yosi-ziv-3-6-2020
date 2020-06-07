@@ -1,18 +1,22 @@
 import {
   FORM_CITY_INPUT_CHANGE,
   FORM_SET_CITIES,
+  SET_SEARCH_CACHE,
   SET_SEARCH_RESULT,
+  SET_CITY_FORECASTS,
 } from "../actions/weather-actions";
 
 const saveResultToLocalStorage = (key, data) => {
-  const searchResult = JSON.parse(localStorage.getItem("searchResult"));
-  searchResult[key] = data;
-  return localStorage.setItem("searchResult", JSON.stringify(searchResult));
+  const searchCache = JSON.parse(localStorage.getItem("searchCache"));
+  searchCache[key] = data;
+  localStorage.setItem("searchCache", JSON.stringify(searchCache));
+  return searchCache;
 };
 const initState = {
   city: { value: "", error: null },
+  searchCache: {},
   searchResult: [],
-  currentCity: null,
+  cityForecasts: null,
 };
 
 export default function weatherReducer(state = initState, action) {
@@ -26,14 +30,26 @@ export default function weatherReducer(state = initState, action) {
       };
     }
     case FORM_SET_CITIES: {
-      const data = action.payload;
-      saveResultToLocalStorage(state.city.value, data);
+      const { data, cache } = action.payload;
+      let searchCache;
+      if (cache) {
+        searchCache = saveResultToLocalStorage(state.city.value, data);
+        console.log(searchCache);
+      }
       return {
         ...state,
+        searchCache: searchCache || state.searchCache,
         searchResult: data,
       };
     }
-
+    case SET_SEARCH_CACHE: {
+      const searchCache = action.payload;
+      return { ...state, searchCache };
+    }
+    case SET_CITY_FORECASTS: {
+      const cityForecasts = action.payload;
+      return { ...state, cityForecasts };
+    }
     default:
       return state;
   }
