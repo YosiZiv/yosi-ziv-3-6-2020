@@ -7,22 +7,40 @@ import Favorites from "./pages/Favorites";
 import {
   setSearchCache,
   setCityForecastsCache,
-} from ".//redux/actions/weather-actions";
+  setCityConditionCache,
+} from "./redux/actions/weather-actions";
+import { setFavorites } from "./redux/actions/favorites-actions";
 import "./App.css";
 
-function App({ setSearchCache, setCityForecastsCache }) {
+function App({
+  setSearchCache,
+  setCityForecastsCache,
+  setCityConditionCache,
+  setFavorites,
+}) {
   useEffect(() => {
-    let searchCache = JSON.parse(localStorage.getItem("searchCache")) || {};
-    let forecastsCache =
+    const searchCache = JSON.parse(localStorage.getItem("searchCache")) || {};
+    const forecastsCache =
       JSON.parse(localStorage.getItem("forecastsCache")) || {};
+    const conditionCache =
+      JSON.parse(localStorage.getItem("conditionCache")) || {};
+    const favorites = JSON.parse(localStorage.getItem("favorites")) || {};
     if (!searchCache.length) {
       localStorage.setItem("searchCache", JSON.stringify(searchCache));
     }
     if (!forecastsCache.length) {
       localStorage.setItem("forecastsCache", JSON.stringify(forecastsCache));
     }
+    if (!conditionCache.length) {
+      localStorage.setItem("conditionCache", JSON.stringify(conditionCache));
+    }
+    if (!favorites.length) {
+      localStorage.setItem("favorites", JSON.stringify(favorites));
+    }
     setSearchCache(searchCache);
     setCityForecastsCache(forecastsCache);
+    setCityConditionCache(conditionCache);
+    setFavorites(favorites);
   }, []);
   const routes = (
     <Switch>
@@ -38,4 +56,9 @@ function App({ setSearchCache, setCityForecastsCache }) {
     </div>
   );
 }
-export default connect(null, { setSearchCache, setCityForecastsCache })(App);
+export default connect(null, {
+  setSearchCache,
+  setCityForecastsCache,
+  setCityConditionCache,
+  setFavorites,
+})(App);

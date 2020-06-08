@@ -1,11 +1,12 @@
 import {
   FORM_CITY_INPUT_CHANGE,
   SET_SEARCH_CACHE,
-  SET_SEARCH_RESULT,
+  SET_CITY_CONDITION_CACHE,
   SET_CITY_FORECASTS_CACHE,
+  SET_SEARCH_RESULT,
   SET_CITY_FORECASTS,
   SET_CITY_CONDITION,
-  formCityInputChange,
+  SET_MODE,
 } from "../actions/weather-actions";
 
 const saveSearchCache = (key, data) => {
@@ -20,15 +21,23 @@ const saveForecastsCache = (key, data) => {
   localStorage.setItem("forecastsCache", JSON.stringify(forecastsCache));
   return forecastsCache;
 };
+const saveConditionCache = (key, data) => {
+  const conditionCache = JSON.parse(localStorage.getItem("conditionCache"));
+  conditionCache[key] = data;
+  localStorage.setItem("conditionCache", JSON.stringify(conditionCache));
+  return conditionCache;
+};
 const initState = {
   searchCity: { value: "", error: null },
   searchCache: {},
   forecastsCache: {},
+  conditionCache: {},
   searchResult: [],
   city: {
     cityCondition: null,
     cityForecasts: null,
   },
+  mode: "c",
 };
 
 export default function weatherReducer(state = initState, action) {
@@ -61,6 +70,10 @@ export default function weatherReducer(state = initState, action) {
       const forecastsCache = action.payload;
       return { ...state, forecastsCache };
     }
+    case SET_CITY_CONDITION_CACHE: {
+      const conditionCache = action.payload;
+      return { ...state, conditionCache };
+    }
     case SET_CITY_FORECASTS: {
       const { data, cache } = action.payload;
       let forecastsCache;
@@ -77,8 +90,25 @@ export default function weatherReducer(state = initState, action) {
       };
     }
     case SET_CITY_CONDITION: {
-      const cityCondition = action.payload;
-      return { ...state, city: { ...state.city, cityCondition } };
+      const { data, cache } = action.payload;
+      let cityConditionCache;
+      if (cache) {
+        cityConditionCache = saveConditionCache(state.searchCity.value, data);
+      }
+      return {
+        ...state,
+        cityConditionCache: cityConditionCache || state.cityConditionCache,
+        city: {
+          ...state.city,
+          cityCondition: data,
+        },
+      };
+    }
+    case SET_MODE: {
+      return {
+        ...state,
+        mode: action.payload,
+      };
     }
     default:
       return state;
