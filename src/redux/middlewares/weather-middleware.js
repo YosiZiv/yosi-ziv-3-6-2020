@@ -48,7 +48,6 @@ const getCitesFail = ({ dispatch }) => (next) => (action) => {
 
 const getCityForecastsStart = ({ dispatch }) => (next) => (action) => {
   if (action.type === GET_CITY_FORECASTS_START) {
-    console.log(action.payload);
     const { key, city } = action.payload;
     return dispatch(
       apiRequest(
@@ -65,9 +64,7 @@ const getCityForecastsStart = ({ dispatch }) => (next) => (action) => {
 };
 const getCityForecastsSuccess = ({ dispatch }) => (next) => (action) => {
   if (action.type === GET_CITY_FORECASTS_SUCCESS) {
-    console.log(action.payload);
     const forecasts = action.payload.DailyForecasts?.map((foreCast) => {
-      console.log(foreCast);
       return {
         date: foreCast.Date,
         day: {
@@ -80,8 +77,6 @@ const getCityForecastsSuccess = ({ dispatch }) => (next) => (action) => {
         },
       };
     });
-    console.log(forecasts);
-
     return dispatch(setCityForecasts({ data: forecasts, cache: true }));
   }
   next(action);
@@ -111,9 +106,7 @@ const getCityConditionStart = ({ dispatch }) => (next) => (action) => {
 
 const getCityConditionSuccess = ({ dispatch }) => (next) => (action) => {
   if (action.type === GET_CITY_CONDITION_SUCCESS) {
-    console.log(action.payload);
     const cityCondition = action.payload?.map((condition) => {
-      console.log(condition);
       return {
         cTemperature: condition.Temperature?.Metric?.Value,
         fTemperature: condition.Temperature?.Imperial?.Value,

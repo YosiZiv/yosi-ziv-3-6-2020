@@ -9,8 +9,6 @@ const City = ({
   mode,
   modeChange,
 }) => {
-  console.log("mode", mode);
-
   const days = [
     "Sunday",
     "Monday",
@@ -31,7 +29,6 @@ const City = ({
     default: "fas fa-cloud",
   };
   const forecasts = cityForecasts.map((forecast) => {
-    console.log(forecast);
     const date = new Date(forecast.date).getDay();
     return (
       <div className="forecasts-body-card" key={forecast.date}>

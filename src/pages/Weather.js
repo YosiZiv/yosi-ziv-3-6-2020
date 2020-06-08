@@ -34,8 +34,6 @@ const WeatherPage = ({
   toggleFavorites,
   setMode,
 }) => {
-  console.log("123", favorites);
-
   const validation = {
     city: {
       required: true,
@@ -55,7 +53,6 @@ const WeatherPage = ({
     // localStorage.setItem("searchResult", JSON.stringify(searchResult));
   };
   const onCitySelect = (key, city) => {
-    console.log(key, city);
     formCityInputChange({ value: city, validation: validation.city });
     setSearchResult({ data: [], cache: false });
     if (conditionCache[city] && forecastsCache[city]) {
@@ -70,8 +67,6 @@ const WeatherPage = ({
     return getCityForecasts({ key, city });
   };
   const toggleFavoritesHandler = (cityName) => {
-    console.log("toggle work", cityName);
-
     toggleFavorites(cityName);
   };
   const modeChange = (mode) => {
