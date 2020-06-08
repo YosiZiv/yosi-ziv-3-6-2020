@@ -1,0 +1,12 @@
+.auto-complete p {
+  cursor: pointer;
+  background: #ffffff;
+  margin: 0 1px;
+  padding: 2px 2px;
+  color: black;
+  border-bottom: 1px solid #2d2d2d;
+  border-radius: 1px;
+}
+.auto-complete p:hover {
+  background: #3593e6;
+}
