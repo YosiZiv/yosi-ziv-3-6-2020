@@ -1,0 +1,11 @@
+.weather-page {
+  width: 100%;
+  padding: 5px;
+}
+.weather-page-title {
+  text-align: center;
+}
+.weather-page-title h1 {
+  font-size: 15px;
+  text-align: center;
+}

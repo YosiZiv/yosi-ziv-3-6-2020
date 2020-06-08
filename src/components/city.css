@@ -1,0 +1,62 @@
+.forecasts-container {
+  background: #5c81a1;
+  cursor: pointer;
+  margin-top: 50px;
+  border: 1px solid white;
+}
+.forecasts-menu {
+  display: flex;
+  justify-content: space-between;
+}
+.forecasts-menu-close {
+  margin: 1px 5px;
+}
+
+.forecasts-menu-city {
+  display: flex;
+  width: 60%;
+  justify-content: space-between;
+}
+.forecasts-menu-city-temp {
+  display: flex;
+}
+.forecasts-menu-city-temp p {
+  margin: 0 2px;
+}
+.active {
+  color: black;
+}
+.forecasts-menu-favorite {
+  margin: 1px 5px;
+}
+.is-favorite {
+  color: red;
+}
+.forecasts {
+  display: flex;
+  justify-content: space-around;
+}
+.forecasts-body-card {
+  font-size: 8px;
+  width: 18%;
+  color: #bababa;
+  border: 1px solid #e9e9e9;
+  background: #fcfcfc;
+  border-radius: 1px;
+  padding: 1px;
+  margin: 5px 2px;
+  text-align: center;
+}
+.forecasts-body-card p {
+  margin: 0;
+}
+.forecasts-body-card-temp {
+  margin: 1px;
+  display: flex;
+}
+.forecasts-body-card-temp p {
+  margin: 1px 1px;
+}
+.forecasts-body-card-max {
+  color: #878787;
+}

@@ -1,28 +1,40 @@
 import React from "react";
 import { connect } from "react-redux";
+import "./weather.css";
 import Input from "../components/Input";
 import AutoComplete from "../components/AutoComplete";
-import CityForecasts from "../components/CityForecasts";
+import City from "../components/City";
 import {
   formCityInputChange,
   getCities,
   getCityForecasts,
   setCityForecasts,
   setSearchResult,
+  getCityCondition,
+  setCityCondition,
+  setMode,
 } from "../redux/actions/weather-actions";
+import { toggleFavorites } from "../redux/actions/favorites-actions";
 const WeatherPage = ({
   searchCache,
+  conditionCache,
   forecastsCache,
   searchResult,
   searchCity,
   setSearchResult,
   city,
+  mode,
+  favorites,
   getCities,
   formCityInputChange,
   getCityForecasts,
   setCityForecasts,
+  getCityCondition,
+  setCityCondition,
+  toggleFavorites,
+  setMode,
 }) => {
-  console.log("123", searchCity);
+  console.log("123", favorites);
 
   const validation = {
     city: {
@@ -46,18 +58,30 @@ const WeatherPage = ({
     console.log(key, city);
     formCityInputChange({ value: city, validation: validation.city });
     setSearchResult({ data: [], cache: false });
-    if (forecastsCache[city]) {
+    if (conditionCache[city] && forecastsCache[city]) {
+      setCityCondition({ data: conditionCache[city], cache: false });
       return setCityForecasts({
         city,
         data: forecastsCache[city],
         cache: false,
       });
     }
+    getCityCondition(key);
     return getCityForecasts({ key, city });
   };
+  const toggleFavoritesHandler = (cityName) => {
+    console.log("toggle work", cityName);
+
+    toggleFavorites(cityName);
+  };
+  const modeChange = (mode) => {
+    setMode(mode);
+  };
   return (
-    <div>
-      <h1>weather page</h1>
+    <div className="weather-page">
+      <div className="weather-page-title">
+        <h1>Search city</h1>
+      </div>
       <div className="weather-page-container">
         <form>
           <Input
@@ -74,9 +98,14 @@ const WeatherPage = ({
       </div>
       {city.cityForecasts && (
         <div>
-          <CityForecasts
+          <City
+            mode={mode}
+            modeChange={modeChange}
+            toggleFavoritesHandler={toggleFavoritesHandler}
+            favorite={favorites[searchCity.value]}
             cityName={searchCity.value}
             cityForecasts={city.cityForecasts}
+            cityCondition={city.cityCondition}
           />
         </div>
       )}
@@ -89,11 +118,23 @@ const mapStateToProps = ({
     searchCity,
     searchCache,
     forecastsCache,
+    conditionCache,
     searchResult,
     city,
+    mode,
   },
+  favoritesReducer: { favorites },
 }) => {
-  return { searchCity, searchCache, forecastsCache, searchResult, city };
+  return {
+    searchCity,
+    searchCache,
+    conditionCache,
+    forecastsCache,
+    searchResult,
+    city,
+    mode,
+    favorites,
+  };
 };
 
 export default connect(mapStateToProps, {
@@ -101,6 +142,10 @@ export default connect(mapStateToProps, {
   getCities,
   setSearchResult,
   getCityForecasts,
+  getCityCondition,
   setCityForecasts,
   setSearchResult,
+  setCityCondition,
+  toggleFavorites,
+  setMode,
 })(WeatherPage);
