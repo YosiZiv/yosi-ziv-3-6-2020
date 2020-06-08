@@ -11,7 +11,7 @@ import {
   GET_CITY_CONDITION_SUCCESS,
   GET_CITY_CONDITION_FAIL,
   setSearchResult,
-  formCityInputChange,
+  setCityCondition,
   setCityForecasts,
 } from "../actions/weather-actions";
 
@@ -111,6 +111,15 @@ const getCityConditionStart = ({ dispatch }) => (next) => (action) => {
 
 const getCityConditionSuccess = ({ dispatch }) => (next) => (action) => {
   if (action.type === GET_CITY_CONDITION_SUCCESS) {
+    console.log(action.payload);
+    const cityCondition = action.payload?.map((condition) => {
+      console.log(condition);
+      return {
+        cTemperature: condition.Temperature?.Metric?.Value,
+        fTemperature: condition.Temperature?.Imperial?.Value,
+      };
+    });
+    return dispatch(setCityCondition({ data: cityCondition, cache: true }));
   }
   next(action);
 };
