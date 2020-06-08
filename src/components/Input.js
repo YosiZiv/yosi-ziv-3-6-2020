@@ -1,7 +1,7 @@
 import React from "react";
 import "./input.css";
 
-const Input = ({ name, type, error, value, onChange, onBlur }) => {
+const Input = ({ id, name, type, error, value, onChange, onBlur }) => {
   const inputClass = error ? "form-control is-invalid" : "form-control";
   return (
     <div className="input-container">
@@ -9,6 +9,7 @@ const Input = ({ name, type, error, value, onChange, onBlur }) => {
         <strong>{name}</strong>
       </label>
       <input
+        id={id}
         name={name}
         type={type}
         value={value}

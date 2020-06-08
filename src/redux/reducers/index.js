@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
 import ui from "./ui";
 import weatherReducer from "./weather-reducer";
-import favoritesReducer from "./favorites-reducer";
+import cacheReducer from "./cache-reducer";
 export const reducers = combineReducers({
   ui,
   weatherReducer,
-  favoritesReducer,
+  cacheReducer,
 });
