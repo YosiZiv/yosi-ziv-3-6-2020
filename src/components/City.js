@@ -1,16 +1,13 @@
 import React from "react";
 import "./city.css";
 const City = ({
-  cityForecasts,
-  cityCondition,
+  city,
   cityName,
   favorite,
   toggleFavoritesHandler,
   mode,
   modeChange,
 }) => {
-  console.log("mode", mode);
-
   const days = [
     "Sunday",
     "Monday",
@@ -28,15 +25,19 @@ const City = ({
     Partlycloudy: "fas fa-cloud",
     Mostlycloudy: "fas fa-cloud",
     Thunderstorms: "fas fa-cloud-showers-heavy",
-    default: "fas fa-cloud",
+    Intermittentclouds: "fas fa-cloud",
+    default: "fas fa-sun",
   };
-  const forecasts = cityForecasts.map((forecast) => {
-    console.log(forecast);
+  const forecasts = city?.cityForecasts?.map((forecast) => {
     const date = new Date(forecast.date).getDay();
     return (
       <div className="forecasts-body-card" key={forecast.date}>
         <p>{days[date]}</p>
-        <i className={icons[forecast.day.condition.replace(/\s/g, "")]}></i>
+        <i
+          className={
+            icons[forecast.day.condition.replace(/\s/g, "")] || icons.default
+          }
+        ></i>
         <div className="forecasts-body-card-temp">
           <p className="forecasts-body-card-min">
             {mode === "c"
@@ -62,8 +63,8 @@ const City = ({
           <p>{cityName}</p>
           <p>
             {mode === "c"
-              ? `${cityCondition[0].cTemperature}C°`
-              : `${cityCondition[0].fTemperature}F°`}
+              ? `${city.cityCondition[0].cTemperature}C°`
+              : `${city.cityCondition[0].fTemperature}F°`}
           </p>
           <div className="forecasts-menu-city-temp">
             <p
@@ -88,7 +89,7 @@ const City = ({
               : "forecasts-menu-favorite"
           }
           disabled={favorite}
-          onClick={() => toggleFavoritesHandler(cityName)}
+          onClick={() => toggleFavoritesHandler({ cityName, key: city.key })}
         >
           <i className="fas fa-heart"></i>
         </div>

@@ -4,6 +4,7 @@ import "./weather.css";
 import Input from "../components/Input";
 import AutoComplete from "../components/AutoComplete";
 import City from "../components/City";
+import { checkValidation } from "../utils";
 import {
   formCityInputChange,
   getCities,
@@ -14,17 +15,17 @@ import {
   setCityCondition,
   setMode,
 } from "../redux/actions/weather-actions";
-import { toggleFavorites } from "../redux/actions/favorites-actions";
+import { toggleFavorites } from "../redux/actions/cache-actions";
 const WeatherPage = ({
   searchCache,
   conditionCache,
   forecastsCache,
+  favoritesCache,
   searchResult,
   searchCity,
   setSearchResult,
   city,
   mode,
-  favorites,
   getCities,
   formCityInputChange,
   getCityForecasts,
@@ -34,45 +35,54 @@ const WeatherPage = ({
   toggleFavorites,
   setMode,
 }) => {
-  console.log("123", favorites);
-
   const validation = {
-    city: {
-      required: true,
-      minLength: 2,
-    },
+    isRequired: true,
+    english: true,
   };
   const onChange = (e) => {
-    formCityInputChange({ value: e.target.value, validation: validation.city });
+    console.log(e.target);
+    const error = checkValidation(e.target.id, e.target.value, validation);
+    console.log(error);
+    if (error) {
+      return formCityInputChange({
+        value: e.target.value.toLowerCase(),
+        error,
+      });
+    }
+    formCityInputChange({
+      value: e.target.value.toLowerCase(),
+      error: null,
+    });
     if (searchCache[e.target.value]) {
       return setSearchResult({
         data: searchCache[e.target.value],
-        cache: false,
       });
     }
     return getCities(e.target.value);
     // searchResult[e.target.value] = e.target.value;
     // localStorage.setItem("searchResult", JSON.stringify(searchResult));
   };
-  const onCitySelect = (key, city) => {
-    console.log(key, city);
-    formCityInputChange({ value: city, validation: validation.city });
-    setSearchResult({ data: [], cache: false });
+  const onCitySelect = (locationKey, city) => {
+    formCityInputChange({
+      key: locationKey,
+      value: city,
+      validation: validation.city,
+    });
+    setSearchResult({ data: [] });
     if (conditionCache[city] && forecastsCache[city]) {
-      setCityCondition({ data: conditionCache[city], cache: false });
+      setCityCondition({ data: conditionCache[city] });
       return setCityForecasts({
         city,
         data: forecastsCache[city],
-        cache: false,
       });
     }
-    getCityCondition(key);
-    return getCityForecasts({ key, city });
+    getCityCondition(locationKey);
+    return getCityForecasts({ locationKey, city });
   };
-  const toggleFavoritesHandler = (cityName) => {
-    console.log("toggle work", cityName);
+  const toggleFavoritesHandler = ({ cityName, key }) => {
+    console.log(cityName, key);
 
-    toggleFavorites(cityName);
+    toggleFavorites({ cityName, key });
   };
   const modeChange = (mode) => {
     setMode(mode);
@@ -102,10 +112,9 @@ const WeatherPage = ({
             mode={mode}
             modeChange={modeChange}
             toggleFavoritesHandler={toggleFavoritesHandler}
-            favorite={favorites[searchCity.value]}
+            favorite={favoritesCache[searchCity.value]}
             cityName={searchCity.value}
-            cityForecasts={city.cityForecasts}
-            cityCondition={city.cityCondition}
+            city={city}
           />
         </div>
       )}
@@ -114,16 +123,8 @@ const WeatherPage = ({
 };
 
 const mapStateToProps = ({
-  weatherReducer: {
-    searchCity,
-    searchCache,
-    forecastsCache,
-    conditionCache,
-    searchResult,
-    city,
-    mode,
-  },
-  favoritesReducer: { favorites },
+  weatherReducer: { searchCity, searchResult, city, mode },
+  cacheReducer: { searchCache, forecastsCache, conditionCache, favoritesCache },
 }) => {
   return {
     searchCity,
@@ -133,7 +134,7 @@ const mapStateToProps = ({
     searchResult,
     city,
     mode,
-    favorites,
+    favoritesCache,
   };
 };
 
@@ -144,7 +145,6 @@ export default connect(mapStateToProps, {
   getCityForecasts,
   getCityCondition,
   setCityForecasts,
-  setSearchResult,
   setCityCondition,
   toggleFavorites,
   setMode,

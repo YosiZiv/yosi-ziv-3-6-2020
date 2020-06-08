@@ -5,46 +5,55 @@ import Navigation from "./components/Navigation";
 import Weather from "./pages/Weather";
 import Favorites from "./pages/Favorites";
 import {
+  setFavoritesCache,
   setSearchCache,
   setCityForecastsCache,
   setCityConditionCache,
-} from "./redux/actions/weather-actions";
-import { setFavorites } from "./redux/actions/favorites-actions";
+} from "./redux/actions/cache-actions";
 import "./App.css";
 
 function App({
   setSearchCache,
   setCityForecastsCache,
   setCityConditionCache,
-  setFavorites,
+  setFavoritesCache,
 }) {
   useEffect(() => {
-    const searchCache = JSON.parse(localStorage.getItem("searchCache")) || {};
-    const forecastsCache =
-      JSON.parse(localStorage.getItem("forecastsCache")) || {};
-    const conditionCache =
-      JSON.parse(localStorage.getItem("conditionCache")) || {};
-    const favorites = JSON.parse(localStorage.getItem("favorites")) || {};
-    if (!searchCache.length) {
-      localStorage.setItem("searchCache", JSON.stringify(searchCache));
-    }
-    if (!forecastsCache.length) {
-      localStorage.setItem("forecastsCache", JSON.stringify(forecastsCache));
-    }
-    if (!conditionCache.length) {
-      localStorage.setItem("conditionCache", JSON.stringify(conditionCache));
-    }
-    if (!favorites.length) {
-      localStorage.setItem("favorites", JSON.stringify(favorites));
-    }
-    setSearchCache(searchCache);
-    setCityForecastsCache(forecastsCache);
-    setCityConditionCache(conditionCache);
-    setFavorites(favorites);
-  }, []);
+    const setInitData = () => {
+      const searchCache = JSON.parse(localStorage.getItem("searchCache")) || {};
+      const forecastsCache =
+        JSON.parse(localStorage.getItem("forecastsCache")) || {};
+      const conditionCache =
+        JSON.parse(localStorage.getItem("conditionCache")) || {};
+      const favoritesCache =
+        JSON.parse(localStorage.getItem("favoritesCache")) || {};
+      if (!searchCache.length) {
+        localStorage.setItem("searchCache", JSON.stringify(searchCache));
+      }
+      if (!forecastsCache.length) {
+        localStorage.setItem("forecastsCache", JSON.stringify(forecastsCache));
+      }
+      if (!conditionCache.length) {
+        localStorage.setItem("conditionCache", JSON.stringify(conditionCache));
+      }
+      if (!favoritesCache.length) {
+        localStorage.setItem("favoritesCache", JSON.stringify(favoritesCache));
+      }
+      setSearchCache({ item: searchCache });
+      setCityForecastsCache({ item: forecastsCache });
+      setCityConditionCache({ item: conditionCache });
+      setFavoritesCache({ item: favoritesCache });
+    };
+    setInitData();
+  }, [
+    setSearchCache,
+    setCityForecastsCache,
+    setCityConditionCache,
+    setFavoritesCache,
+  ]);
   const routes = (
     <Switch>
-      <Route path="/weather" component={Weather} />
+      <Route path="/" component={Weather} />
       <Route path="/favorites" component={Favorites} />
     </Switch>
   );
@@ -60,5 +69,5 @@ export default connect(null, {
   setSearchCache,
   setCityForecastsCache,
   setCityConditionCache,
-  setFavorites,
+  setFavoritesCache,
 })(App);
