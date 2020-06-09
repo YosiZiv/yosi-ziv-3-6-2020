@@ -3,7 +3,7 @@ import "./favorites.css";
 import { connect } from "react-redux";
 import FavoriteCard from "../components/FavoriteCard";
 import { getCityCondition } from "../redux/actions/weather-actions";
-const Favorites = ({ favoritesCache, conditionCache, ready }) => {
+const Favorites = ({ favoritesCache, conditionCache, mode, ready }) => {
   const getFavoritesState = (favorites) => {
     const data = Object.entries(favorites).map((item) => {
       console.log(item, conditionCache[item[1]]);
@@ -11,6 +11,7 @@ const Favorites = ({ favoritesCache, conditionCache, ready }) => {
       if (conditionCache[item[1]]) {
         return (
           <FavoriteCard
+            mode={mode}
             key={item[1]}
             cityName={item[0]}
             data={conditionCache[item[1]]}
@@ -34,9 +35,11 @@ const Favorites = ({ favoritesCache, conditionCache, ready }) => {
 //   }
 // }, [ready, favorites]);
 const mapStateToProps = ({
+  weatherReducer: { mode },
   cacheReducer: { favoritesCache, conditionCache, ready },
 }) => {
   return {
+    mode,
     favoritesCache,
     conditionCache,
     ready,
