@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import "./weather.css";
 import Input from "../components/Input";
 import AutoComplete from "../components/AutoComplete";
 import City from "../components/City";
+import Spinner from "../components/Spinner";
 import { checkValidation } from "../utils";
 import {
   formCityInputChange,
   getCities,
+  getCityByLocation,
   getCityForecasts,
   setCityForecasts,
   setSearchResult,
@@ -21,11 +23,13 @@ const WeatherPage = ({
   conditionCache,
   forecastsCache,
   favoritesCache,
+  userLocationCache,
   searchResult,
   searchCity,
   setSearchResult,
   city,
   mode,
+  ready,
   getCities,
   formCityInputChange,
   getCityForecasts,
@@ -39,18 +43,58 @@ const WeatherPage = ({
     isRequired: true,
     english: true,
   };
+  useEffect(() => {
+    if (Object.keys(userLocationCache).length) {
+      console.log(userLocationCache);
+      const { key, cityName } = userLocationCache;
+      formCityInputChange({
+        key,
+        value: cityName,
+        validation,
+      });
+      if (conditionCache[key] && forecastsCache[key]) {
+        setCityCondition({ data: conditionCache[key] });
+        return setCityForecasts({
+          data: forecastsCache[key],
+        });
+      }
+      getCityCondition(key);
+      return getCityForecasts(key);
+    }
+    if (!Object.keys(userLocationCache).length && ready) {
+      console.log("inside if ");
+      const telAvivKey = "215805";
+      formCityInputChange({
+        key: telAvivKey,
+        value: "Tel Aviv",
+        validation,
+      });
+      if (conditionCache[telAvivKey] && forecastsCache[telAvivKey]) {
+        console.log("inside if", conditionCache[telAvivKey]);
+
+        setCityCondition({ data: conditionCache[telAvivKey] });
+        return setCityForecasts({
+          data: forecastsCache[telAvivKey],
+        });
+      }
+      getCityCondition(telAvivKey);
+      return getCityForecasts(telAvivKey);
+    }
+  }, [userLocationCache, ready]);
   const onChange = (e) => {
-    console.log(e.target);
+    setSearchResult({ data: [] });
+    setCityCondition({ data: null });
+    setCityForecasts({ data: null });
     const error = checkValidation(e.target.id, e.target.value, validation);
-    console.log(error);
     if (error) {
+      // if input error return only InputChange action
       return formCityInputChange({
-        value: e.target.value.toLowerCase(),
+        value: e.target.value,
         error,
       });
     }
     formCityInputChange({
-      value: e.target.value.toLowerCase(),
+      value: e.target.value,
       error: null,
     });
     if (searchCache[e.target.value]) {
@@ -59,29 +103,24 @@ const WeatherPage = ({
       });
     }
     return getCities(e.target.value);
-    // searchResult[e.target.value] = e.target.value;
-    // localStorage.setItem("searchResult", JSON.stringify(searchResult));
   };
   const onCitySelect = (locationKey, city) => {
     formCityInputChange({
       key: locationKey,
       value: city,
-      validation: validation.city,
+      validation,
     });
     setSearchResult({ data: [] });
     if (conditionCache[city] && forecastsCache[city]) {
       setCityCondition({ data: conditionCache[city] });
       return setCityForecasts({
-        city,
         data: forecastsCache[city],
       });
     }
     getCityCondition(locationKey);
-    return getCityForecasts({ locationKey, city });
+    return getCityForecasts(locationKey);
   };
   const toggleFavoritesHandler = ({ cityName, key }) => {
-    console.log(cityName, key);
-
     toggleFavorites({ cityName, key });
   };
   const modeChange = (mode) => {
@@ -106,6 +145,7 @@ const WeatherPage = ({
           <AutoComplete searchResult={searchResult} onClick={onCitySelect} />
         </form>
       </div>
+      <Spinner />
       {city.cityForecasts && (
         <div>
           <City
@@ -124,23 +164,33 @@ const WeatherPage = ({
 
 const mapStateToProps = ({
   weatherReducer: { searchCity, searchResult, city, mode },
-  cacheReducer: { searchCache, forecastsCache, conditionCache, favoritesCache },
+  cacheReducer: {
+    searchCache,
+    forecastsCache,
+    conditionCache,
+    favoritesCache,
+    userLocationCache,
+    ready,
+  },
 }) => {
   return {
     searchCity,
-    searchCache,
-    conditionCache,
-    forecastsCache,
     searchResult,
     city,
     mode,
+    searchCache,
+    conditionCache,
+    forecastsCache,
     favoritesCache,
+    userLocationCache,
+    ready,
   };
 };
 
 export default connect(mapStateToProps, {
   formCityInputChange,
   getCities,
+  getCityByLocation,
   setSearchResult,
   getCityForecasts,
   getCityCondition,
