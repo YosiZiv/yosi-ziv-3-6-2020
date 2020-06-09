@@ -107,12 +107,16 @@ const WeatherPage = ({
       validation,
     });
     setSearchResult({ data: [] });
-    if (conditionCache[city] && forecastsCache[city]) {
+    console.log(conditionCache[locationKey], forecastsCache[locationKey]);
+
+    if (conditionCache[locationKey] && forecastsCache[locationKey]) {
       setCityCondition({ data: conditionCache[city] });
       return setCityForecasts({
         data: forecastsCache[city],
       });
     }
+    console.log("OOOOOpss");
+
     getCityCondition(locationKey);
     return getCityForecasts(locationKey);
   };
