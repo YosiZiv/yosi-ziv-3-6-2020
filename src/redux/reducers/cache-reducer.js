@@ -3,7 +3,9 @@ import {
   SET_CITY_CONDITION_CACHE,
   SET_CITY_FORECASTS_CACHE,
   SET_FAVORITES_CACHE,
+  SET_USER_LOCATION_CACHE,
   TOGGLE_FAVORITES,
+  SET_CACHE_READY,
 } from "../actions/cache-actions";
 import { saveCache } from "../../utils";
 
@@ -12,6 +14,8 @@ const initState = {
   forecastsCache: {},
   conditionCache: {},
   favoritesCache: {},
+  userLocationCache: {},
+  ready: false,
 };
 
 export default function weatherReducer(state = initState, action) {
@@ -56,6 +60,16 @@ export default function weatherReducer(state = initState, action) {
       saveCache("favoritesCache", favoritesCache);
       return { ...state, favoritesCache };
     }
+    case SET_USER_LOCATION_CACHE: {
+      console.log(action.payload);
+      const { key, cityName } = action.payload;
+      const userLocationCache = {
+        key,
+        cityName,
+      };
+      saveCache("userLocationCache", userLocationCache);
+      return { ...state, userLocationCache };
+    }
     case TOGGLE_FAVORITES: {
       console.log(action.payload);
 
@@ -71,6 +85,9 @@ export default function weatherReducer(state = initState, action) {
         ...state,
         favoritesCache: { ...favoritesCache },
       };
+    }
+    case SET_CACHE_READY: {
+      return { ...state, ready: true };
     }
     default:
       return state;

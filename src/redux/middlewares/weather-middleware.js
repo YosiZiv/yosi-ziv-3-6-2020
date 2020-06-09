@@ -10,11 +10,15 @@ import {
   GET_CITY_CONDITION_START,
   GET_CITY_CONDITION_SUCCESS,
   GET_CITY_CONDITION_FAIL,
+  GET_CITY_BY_LOCATION_START,
+  GET_CITY_BY_LOCATION_SUCCESS,
+  GET_CITY_BY_LOCATION_FAIL,
   setSearchResult,
   setCityCondition,
   setCityForecasts,
 } from "../actions/weather-actions";
 import {
+  setUserLocationCache,
   setSearchCache,
   setCityConditionCache,
   setCityForecastsCache,
@@ -49,7 +53,7 @@ const getCitesSuccess = ({ dispatch }) => (next) => (action) => {
 
       return { key: item.Key, city: item.LocalizedName };
     });
-    dispatch(setSearchCache({ key: q, data: filteredData }));
+    dispatch(setSearchCache({ key: q.toLowerCase(), data: filteredData }));
     return dispatch(setSearchResult({ data: filteredData }));
   }
   next(action);
@@ -62,7 +66,7 @@ const getCitesFail = ({ dispatch }) => (next) => (action) => {
 
 const getCityForecastsStart = ({ dispatch }) => (next) => (action) => {
   if (action.type === GET_CITY_FORECASTS_START) {
-    const { locationKey } = action.payload;
+    const locationKey = action.payload;
     return dispatch(
       apiRequest(
         "get",
@@ -130,7 +134,10 @@ const getCityConditionSuccess = ({ dispatch }) => (next) => (action) => {
     console.log(action);
     const { locationKey } = action.data;
     const cityCondition = action.payload?.map((condition) => {
+      console.log(condition);
+
       return {
+        condition: condition.WeatherText,
         cTemperature: condition.Temperature?.Metric?.Value,
         fTemperature: condition.Temperature?.Imperial?.Value,
       };
@@ -145,22 +152,45 @@ const getCityConditionSuccess = ({ dispatch }) => (next) => (action) => {
 
 const getCityConditionFail = ({ dispatch }) => (next) => (action) => {
   if (action.type === GET_CITY_FORECASTS_FAIL) {
-    const locationKey = action.payload;
+    console.log(action.payload);
+  }
+  next(action);
+};
+const getCityByLocationStart = ({ dispatch }) => (next) => (action) => {
+  if (action.type === GET_CITY_BY_LOCATION_START) {
+    console.log(action.payload);
+    const userLocation = action.payload;
+    const q = `${userLocation.let},${userLocation.log}`;
+    console.log(q);
 
     return dispatch(
       apiRequest(
         "get",
-        `/forecasts/v1/daily/5day/${locationKey}`,
+        `/locations/v1/cities/geoposition/search`,
         null,
-        { apikey },
-        GET_CITY_FORECASTS_SUCCESS,
-        GET_CITY_FORECASTS_FAIL
+        { apikey, q },
+        GET_CITY_BY_LOCATION_SUCCESS,
+        GET_CITY_BY_LOCATION_FAIL
       )
     );
   }
   next(action);
 };
-
+const getCityByLocationSuccess = ({ dispatch }) => (next) => (action) => {
+  if (action.type === GET_CITY_BY_LOCATION_SUCCESS) {
+    console.log(action.payload);
+    const key = action.payload.Key;
+    const cityName = action.payload.LocalizedName;
+    return dispatch(setUserLocationCache({ key, cityName }));
+  }
+  next(action);
+};
+const getCityByLocationFail = ({ dispatch }) => (next) => (action) => {
+  if (action.type === GET_CITY_BY_LOCATION_FAIL) {
+    console.log(action.payload);
+  }
+  next(action);
+};
 export const weatherMdl = [
   getCitiesStart,
   getCitesSuccess,
@@ -171,4 +201,7 @@ export const weatherMdl = [
   getCityConditionStart,
   getCityConditionSuccess,
   getCityForecastsFail,
+  getCityByLocationStart,
+  getCityByLocationSuccess,
+  getCityByLocationFail,
 ];
