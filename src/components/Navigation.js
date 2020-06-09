@@ -20,6 +20,7 @@ export default function Navigation() {
       <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div className="navbar-nav">
           <NavLink
+            exact
             className="nav-item nav-link"
             to="/"
             activeStyle={{ color: "blue" }}

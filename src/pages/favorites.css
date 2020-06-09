@@ -1,7 +1,7 @@
 .favorites-container {
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   color: #faf8fc;
   height: 100px;
 }
