@@ -187,7 +187,7 @@ export const weatherMdl = [
   getCityForecastsFail,
   getCityConditionStart,
   getCityConditionSuccess,
-  getCityForecastsFail,
+  getCityConditionFail,
   getCityByLocationStart,
   getCityByLocationSuccess,
   getCityByLocationFail,

@@ -43,7 +43,7 @@ const WeatherPage = ({
     isRequired: true,
     english: true,
   };
-  useEffect(() => {
+  const setLocation = () => {
     if (Object.keys(userLocationCache).length) {
       const { key, cityName } = userLocationCache;
       formCityInputChange({
@@ -76,6 +76,9 @@ const WeatherPage = ({
       getCityCondition(telAvivKey);
       return getCityForecasts(telAvivKey);
     }
+  };
+  useEffect(() => {
+    setLocation();
   }, [userLocationCache, ready]);
   const onChange = (e) => {
     setSearchResult({ data: [] });
@@ -107,16 +110,12 @@ const WeatherPage = ({
       validation,
     });
     setSearchResult({ data: [] });
-    console.log(conditionCache[locationKey], forecastsCache[locationKey]);
-
     if (conditionCache[locationKey] && forecastsCache[locationKey]) {
-      setCityCondition({ data: conditionCache[city] });
+      setCityCondition({ data: conditionCache[locationKey] });
       return setCityForecasts({
-        data: forecastsCache[city],
+        data: forecastsCache[locationKey],
       });
     }
-    console.log("OOOOOpss");
-
     getCityCondition(locationKey);
     return getCityForecasts(locationKey);
   };

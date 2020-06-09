@@ -12,7 +12,6 @@ export const api = ({ dispatch }) => (next) => (action) => {
       params = null,
       onSuccess,
       onError,
-      data,
     } = action.meta;
     axios({ method, url, body, params })
       .then((response) => {

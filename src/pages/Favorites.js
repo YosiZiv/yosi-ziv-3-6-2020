@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./favorites.css";
 import { connect } from "react-redux";
 import FavoriteCard from "../components/FavoriteCard";
@@ -16,7 +16,7 @@ const Favorites = ({ favoritesCache, conditionCache, mode }) => {
           />
         );
       } else {
-        getCityCondition(item[1]);
+        return getCityCondition(item[1]);
       }
     });
     return data;

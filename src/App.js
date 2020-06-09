@@ -65,7 +65,6 @@ function App({
     setFavoritesCache({ item: favoritesCache });
     setCacheReady();
   };
-
   useEffect(() => {
     setInitData();
     setLocation();

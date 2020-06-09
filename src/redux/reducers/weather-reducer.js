@@ -5,8 +5,6 @@ import {
   SET_CITY_CONDITION,
   SET_MODE,
 } from "../actions/weather-actions";
-import { saveCache } from "../../utils";
-
 const initState = {
   searchCity: { value: "", error: null },
   searchResult: [],
