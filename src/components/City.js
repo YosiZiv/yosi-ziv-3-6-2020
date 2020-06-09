@@ -1,4 +1,5 @@
 import React from "react";
+import { icons } from "../utils";
 import "./city.css";
 const City = ({
   city,
@@ -8,26 +9,7 @@ const City = ({
   mode,
   modeChange,
 }) => {
-  const days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-  const icons = {
-    Hot: "fas fa-sun",
-    Sunny: "fas fa-sun",
-    Mostlysunny: "fas fa-sun",
-    Partlysunny: "fas fa-sun",
-    Partlycloudy: "fas fa-cloud",
-    Mostlycloudy: "fas fa-cloud",
-    Thunderstorms: "fas fa-cloud-showers-heavy",
-    Intermittentclouds: "fas fa-cloud",
-    default: "fas fa-sun",
-  };
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const forecasts = city?.cityForecasts?.map((forecast) => {
     const date = new Date(forecast.date).getDay();
     return (
@@ -60,12 +42,6 @@ const City = ({
           <i className="fas fa-times"></i>
         </div>
         <div className="forecasts-menu-city">
-          <p>{cityName}</p>
-          <p>
-            {mode === "c"
-              ? `${city.cityCondition[0].cTemperature}C°`
-              : `${city.cityCondition[0].fTemperature}F°`}
-          </p>
           <div className="forecasts-menu-city-temp">
             <p
               className={mode === "c" ? "active" : ""}
@@ -94,7 +70,14 @@ const City = ({
           <i className="fas fa-heart"></i>
         </div>
       </div>
-      <div className="forecasts-body"></div>
+      <div className="forecasts-body">
+        <p>{cityName}</p>
+        <p>
+          {mode === "c"
+            ? `${city.cityCondition[0].cTemperature}`
+            : `${city.cityCondition[0].fTemperature}`}
+        </p>
+      </div>
       <div className="forecasts">{forecasts}</div>
     </div>
   );

@@ -23,3 +23,14 @@ export const checkValidation = (id, value, validation) => {
     return `${id} field must contain only english letters`;
   }
 };
+export const icons = {
+  Hot: "fas fa-sun yellow",
+  Sunny: "fas fa-sun yellow",
+  Mostlysunny: "fas fa-sun yellow",
+  Partlysunny: "fas fa-sun yellow",
+  Partlycloudy: "fas fa-cloud gray",
+  Mostlycloudy: "fas fa-cloud gray",
+  Thunderstorms: "fas fa-cloud-showers-heavy gray",
+  Intermittentclouds: "fas fa-cloud gray",
+  default: "fas fa-sun yellow",
+};
