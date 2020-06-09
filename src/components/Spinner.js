@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 const Spinner = ({ loading }) => {
-  console.log(loading);
   const loadingUi = loading ? (
     <div className="text-center">
       <div

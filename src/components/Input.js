@@ -4,8 +4,6 @@ import { connect } from "react-redux";
 
 const Input = ({ id, name, type, error, value, onChange, onBlur, loading }) => {
   const inputClass = error ? "form-control is-invalid" : "form-control";
-  console.log(loading);
-
   return (
     <div className="input-container">
       <label>
