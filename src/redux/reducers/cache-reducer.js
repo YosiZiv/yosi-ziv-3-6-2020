@@ -61,7 +61,6 @@ export default function weatherReducer(state = initState, action) {
       return { ...state, favoritesCache };
     }
     case SET_USER_LOCATION_CACHE: {
-      console.log(action.payload);
       const { key, cityName } = action.payload;
       const userLocationCache = {
         key,
@@ -71,8 +70,6 @@ export default function weatherReducer(state = initState, action) {
       return { ...state, userLocationCache };
     }
     case TOGGLE_FAVORITES: {
-      console.log(action.payload);
-
       const { cityName, key } = action.payload;
       const favoritesCache = state.favoritesCache;
       if (favoritesCache[cityName]) {

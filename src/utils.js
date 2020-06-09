@@ -5,8 +5,6 @@ export const saveCache = (name, data) => {
   return setCache;
 };
 export const checkValidation = (id, value, validation) => {
-  console.log(id, value, validation);
-
   if (!validation) {
     return null;
   }

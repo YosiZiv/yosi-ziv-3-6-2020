@@ -43,14 +43,11 @@ const getCitiesStart = ({ dispatch }) => (next) => (action) => {
 };
 const getCitesSuccess = ({ dispatch }) => (next) => (action) => {
   if (action.type === GET_CITIES_SUCCESS) {
-    console.log(action);
     const {
       payload,
       data: { q },
     } = action;
     const filteredData = payload.map((item) => {
-      console.log(item);
-
       return { key: item.Key, city: item.LocalizedName };
     });
     dispatch(setSearchCache({ key: q.toLowerCase(), data: filteredData }));
@@ -131,19 +128,14 @@ const getCityConditionStart = ({ dispatch }) => (next) => (action) => {
 
 const getCityConditionSuccess = ({ dispatch }) => (next) => (action) => {
   if (action.type === GET_CITY_CONDITION_SUCCESS) {
-    console.log(action);
     const { locationKey } = action.data;
     const cityCondition = action.payload?.map((condition) => {
-      console.log(condition);
-
       return {
         condition: condition.WeatherText,
         cTemperature: condition.Temperature?.Metric?.Value,
         fTemperature: condition.Temperature?.Imperial?.Value,
       };
     });
-    console.log(cityCondition, locationKey);
-
     dispatch(setCityConditionCache({ key: locationKey, data: cityCondition }));
     return dispatch(setCityCondition({ data: cityCondition }));
   }
@@ -152,17 +144,14 @@ const getCityConditionSuccess = ({ dispatch }) => (next) => (action) => {
 
 const getCityConditionFail = ({ dispatch }) => (next) => (action) => {
   if (action.type === GET_CITY_FORECASTS_FAIL) {
-    console.log(action.payload);
+    // TODO handle api bad request
   }
   next(action);
 };
 const getCityByLocationStart = ({ dispatch }) => (next) => (action) => {
   if (action.type === GET_CITY_BY_LOCATION_START) {
-    console.log(action.payload);
     const userLocation = action.payload;
     const q = `${userLocation.let},${userLocation.log}`;
-    console.log(q);
-
     return dispatch(
       apiRequest(
         "get",
@@ -178,7 +167,6 @@ const getCityByLocationStart = ({ dispatch }) => (next) => (action) => {
 };
 const getCityByLocationSuccess = ({ dispatch }) => (next) => (action) => {
   if (action.type === GET_CITY_BY_LOCATION_SUCCESS) {
-    console.log(action.payload);
     const key = action.payload.Key;
     const cityName = action.payload.LocalizedName;
     return dispatch(setUserLocationCache({ key, cityName }));
@@ -187,7 +175,6 @@ const getCityByLocationSuccess = ({ dispatch }) => (next) => (action) => {
 };
 const getCityByLocationFail = ({ dispatch }) => (next) => (action) => {
   if (action.type === GET_CITY_BY_LOCATION_FAIL) {
-    console.log(action.payload);
   }
   next(action);
 };

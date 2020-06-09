@@ -27,8 +27,6 @@ function App({
   const setLocation = () => {
     const userLocationCache =
       JSON.parse(localStorage.getItem("userLocationCache")) || {};
-    console.log(!Object.keys(userLocationCache).length);
-
     if (navigator.geolocation && !Object.keys(userLocationCache).length) {
       navigator.geolocation.getCurrentPosition((position) => {
         const data = {

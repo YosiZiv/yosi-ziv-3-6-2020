@@ -45,7 +45,6 @@ const WeatherPage = ({
   };
   useEffect(() => {
     if (Object.keys(userLocationCache).length) {
-      console.log(userLocationCache);
       const { key, cityName } = userLocationCache;
       formCityInputChange({
         key,
@@ -62,7 +61,6 @@ const WeatherPage = ({
       return getCityForecasts(key);
     }
     if (!Object.keys(userLocationCache).length && ready) {
-      console.log("inside if ");
       const telAvivKey = "215805";
       formCityInputChange({
         key: telAvivKey,
@@ -70,8 +68,6 @@ const WeatherPage = ({
         validation,
       });
       if (conditionCache[telAvivKey] && forecastsCache[telAvivKey]) {
-        console.log("inside if", conditionCache[telAvivKey]);
-
         setCityCondition({ data: conditionCache[telAvivKey] });
         return setCityForecasts({
           data: forecastsCache[telAvivKey],
