@@ -8,6 +8,12 @@
   margin: 2px 2px;
   text-align: center;
 }
+.favorite-card-condition {
+  height: 25%;
+}
+.favorite-card-cityname {
+  height: 33%;
+}
 .yellow {
   color: #f8f423;
 }

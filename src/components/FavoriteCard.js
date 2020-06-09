@@ -2,8 +2,6 @@ import React from "react";
 import { icons } from "../utils";
 import "./favorite-card.css";
 const FavoriteCard = ({ data, cityName, mode }) => {
-  console.log(mode);
-
   return (
     <div className="favorite-card">
       <div className="favorite-card-cityname">

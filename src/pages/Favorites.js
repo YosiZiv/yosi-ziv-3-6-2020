@@ -22,7 +22,14 @@ const Favorites = ({ favoritesCache, conditionCache, mode }) => {
     return data;
   };
   const favorites = getFavoritesState(favoritesCache);
-  return <div className="favorites-container">{favorites}</div>;
+  return (
+    <div className="favorites-container">
+      <div className="favorites-title">
+        <h1>Favorites Cities</h1>
+      </div>
+      <div className="favorites-cards">{favorites}</div>
+    </div>
+  );
 };
 
 const mapStateToProps = ({

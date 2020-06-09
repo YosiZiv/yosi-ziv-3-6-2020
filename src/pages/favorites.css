@@ -1,9 +1,17 @@
 .favorites-container {
   width: 100%;
+  color: #faf8fc;
+  font-size: 10px;
+}
+.favorites-title {
+  margin-top: 10px;
+  text-align: center;
+}
+.favorites-cards {
+  margin-top: 20px;
+  min-width: 20%;
   display: flex;
   justify-content: center;
-  color: #faf8fc;
-  height: 100px;
 }
 @media screen and (min-width: 600px) {
   .favorites-container {
