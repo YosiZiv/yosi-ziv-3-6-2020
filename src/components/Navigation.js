@@ -1,11 +1,11 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 export default function Navigation() {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <Link className="navbar-brand" to="/">
+      <NavLink className="nav-item nav-link" to="/">
         WeatherApp
-      </Link>
+      </NavLink>
       <button
         className="navbar-toggler"
         type="button"
@@ -19,12 +19,21 @@ export default function Navigation() {
       </button>
       <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div className="navbar-nav">
-          <Link className="nav-item nav-link" to="/weather">
+          <NavLink
+            exact
+            className="nav-item nav-link"
+            to="/"
+            activeStyle={{ color: "blue" }}
+          >
             Weather
-          </Link>
-          <Link to="/favorites" className="nav-item nav-link">
+          </NavLink>
+          <NavLink
+            to="/favorites"
+            className="nav-item nav-link"
+            activeStyle={{ color: "blue" }}
+          >
             Favorites
-          </Link>
+          </NavLink>
         </div>
       </div>
     </nav>

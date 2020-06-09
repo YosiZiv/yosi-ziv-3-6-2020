@@ -1,14 +1,18 @@
 import React from "react";
 import "./input.css";
+import { connect } from "react-redux";
 
-const Input = ({ id, name, type, error, value, onChange, onBlur }) => {
+const Input = ({ id, name, type, error, value, onChange, onBlur, loading }) => {
   const inputClass = error ? "form-control is-invalid" : "form-control";
+  console.log(loading);
+
   return (
     <div className="input-container">
       <label>
         <strong>{name}</strong>
       </label>
       <input
+        disabled={loading}
         id={id}
         name={name}
         type={type}
@@ -27,5 +31,10 @@ const Input = ({ id, name, type, error, value, onChange, onBlur }) => {
     </div>
   );
 };
+const mapStateToProps = ({ ui: { loading } }) => {
+  return {
+    loading,
+  };
+};
 
-export default Input;
+export default connect(mapStateToProps, null)(Input);

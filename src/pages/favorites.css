@@ -1,0 +1,12 @@
+.favorites-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  color: #faf8fc;
+  height: 100px;
+}
+@media screen and (min-width: 600px) {
+  .favorites-container {
+    font-size: 16px;
+  }
+}
