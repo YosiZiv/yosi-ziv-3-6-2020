@@ -77,9 +77,9 @@ const WeatherPage = ({
       return getCityForecasts(telAvivKey);
     }
   };
-  useEffect(() => {
-    setLocation();
-  }, [userLocationCache, ready]);
+  // useEffect(() => {
+  //   setLocation();
+  // }, [userLocationCache, ready]);
   const onChange = (e) => {
     setSearchResult({ data: [] });
     setCityCondition({ data: null });
