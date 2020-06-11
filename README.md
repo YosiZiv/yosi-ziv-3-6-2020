@@ -11,7 +11,7 @@ Project Home Assigment for Twillo
   npm start
 
 ### Prerequisites
-no need any presetup requierd the api_key allready include
+no need any presetup requierd the api_key all ready include
 ### App dependencies
 Frontend: 
 Create React App boundle Axios(Http request) 
