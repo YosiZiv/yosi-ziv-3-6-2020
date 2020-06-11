@@ -2,15 +2,16 @@ import React from "react";
 
 import ForecastCard from "./ForecastsCard";
 import "./city.css";
+import { connect } from "react-redux";
 const City = ({
   city,
-  cityName,
+  searchCity,
   favorite,
-  toggleFavoritesHandler,
+  themeMode,
   tempMode,
+  toggleFavoritesHandler,
   tempModeChange,
   closeModel,
-  themeMode,
 }) => {
   const forecasts = city?.cityForecasts?.map((forecast) => {
     return (
@@ -22,13 +23,16 @@ const City = ({
       />
     );
   });
+  console.log(forecasts);
+
   const theme = themeMode === "dark" ? "dark-theme-card" : "light-theme-card";
-  return (
+  const cityComponent = forecasts ? (
     <div className={"forecasts-container " + theme}>
       <div className="forecasts-menu">
         <div onClick={closeModel} className="forecasts-menu-close">
           <i className="fas fa-times"></i>
         </div>
+
         <div className="forecasts-menu-city">
           <div className="forecasts-menu-city-temp">
             <p
@@ -52,14 +56,18 @@ const City = ({
               ? "forecasts-menu-favorite is-favorite"
               : "forecasts-menu-favorite"
           }
-          disabled={favorite}
-          onClick={() => toggleFavoritesHandler({ cityName, key: city.key })}
+          onClick={() =>
+            toggleFavoritesHandler({
+              cityName: searchCity.value,
+              key: city.key,
+            })
+          }
         >
           <i className="fas fa-heart"></i>
         </div>
       </div>
       <div className="forecasts-body">
-        <p>{cityName}</p>
+        <p>{searchCity.value}</p>
         <p>
           {tempMode === "c"
             ? `${city.cityCondition[0].cTemperature}`
@@ -68,7 +76,18 @@ const City = ({
       </div>
       <div className="forecasts">{forecasts}</div>
     </div>
-  );
+  ) : null;
+  console.log(cityComponent);
+  return cityComponent;
 };
-
-export default City;
+const mapStateToProps = ({
+  weatherReducer: { city, tempMode },
+  ui: { themeMode },
+}) => {
+  return {
+    city,
+    tempMode,
+    themeMode,
+  };
+};
+export default connect(mapStateToProps, null)(City);

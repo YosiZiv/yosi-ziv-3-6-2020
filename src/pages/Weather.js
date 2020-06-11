@@ -24,13 +24,11 @@ const WeatherPage = ({
   forecastsCache,
   favoritesCache,
   userLocationCache,
-  searchResult,
   searchCity,
   setSearchResult,
-  city,
-  tempMode,
-  themeMode,
   ready,
+  message,
+  themeMode,
   getCities,
   formCityInputChange,
   getCityForecasts,
@@ -151,30 +149,24 @@ const WeatherPage = ({
             value={searchCity.value}
             onChange={onChange}
           />
-          <AutoComplete searchResult={searchResult} onClick={onCitySelect} />
+          <AutoComplete onClick={onCitySelect} />
         </form>
       </div>
       <Spinner />
-      {city.cityForecasts && (
-        <div>
-          <City
-            closeModel={closeModel}
-            tempMode={tempMode}
-            tempModeChange={tempModeChange}
-            toggleFavoritesHandler={toggleFavoritesHandler}
-            favorite={favoritesCache[searchCity.value]}
-            cityName={searchCity.value}
-            city={city}
-            themeMode={themeMode}
-          />
-        </div>
-      )}
+
+      <City
+        searchCity={searchCity}
+        closeModel={closeModel}
+        tempModeChange={tempModeChange}
+        toggleFavoritesHandler={toggleFavoritesHandler}
+        favorite={favoritesCache[searchCity.value]}
+      />
     </div>
   );
 };
 
 const mapStateToProps = ({
-  weatherReducer: { searchCity, searchResult, city, tempMode },
+  weatherReducer: { searchCity },
   cacheReducer: {
     searchCache,
     forecastsCache,
@@ -183,20 +175,18 @@ const mapStateToProps = ({
     userLocationCache,
     ready,
   },
-  ui: { themeMode },
+  ui: { message, themeMode },
 }) => {
   return {
+    themeMode,
     searchCity,
-    searchResult,
-    city,
     searchCache,
     conditionCache,
     forecastsCache,
     favoritesCache,
     userLocationCache,
     ready,
-    tempMode,
-    themeMode,
+    message,
   };
 };
 

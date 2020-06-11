@@ -74,6 +74,16 @@ function App({ setCache, getCityByLocation, setCacheReady }) {
     <Switch>
       <Route exact path="/" component={Weather} />
       <Route path="/favorites" component={Favorites} />
+      <Route
+        path="*"
+        render={() => (
+          <div
+            style={{ color: "#000000", marginTop: "50px", textAlign: "center" }}
+          >
+            <h1>404 Page Not found</h1>
+          </div>
+        )}
+      />
     </Switch>
   );
 

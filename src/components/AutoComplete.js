@@ -1,5 +1,6 @@
 import React from "react";
 import "./auto-complete.css";
+import { connect } from "react-redux";
 const AutoComplete = ({ searchResult, onClick }) => {
   const cities = searchResult.length
     ? searchResult.map((item) => {
@@ -14,4 +15,9 @@ const AutoComplete = ({ searchResult, onClick }) => {
 
   return <div className="auto-complete">{cities}</div>;
 };
-export default AutoComplete;
+const mapStateToProps = ({ weatherReducer: { searchResult } }) => {
+  return {
+    searchResult,
+  };
+};
+export default connect(mapStateToProps, null)(AutoComplete);
