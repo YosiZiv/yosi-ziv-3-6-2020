@@ -24,7 +24,6 @@ const initState = {
 export default function weatherReducer(state = initState, action) {
   switch (action.type) {
     case SET_CACHE: {
-      console.log(action.payload);
       const cache = action.payload;
       const obj = {};
       if (cache.length && Array.isArray(cache)) {

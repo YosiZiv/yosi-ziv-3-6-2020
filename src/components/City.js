@@ -23,8 +23,6 @@ const City = ({
       />
     );
   });
-  console.log(forecasts);
-
   const theme = themeMode === "dark" ? "dark-theme-card" : "light-theme-card";
   const cityComponent = forecasts ? (
     <div className={"forecasts-container " + theme}>
@@ -77,7 +75,7 @@ const City = ({
       <div className="forecasts">{forecasts}</div>
     </div>
   ) : null;
-  console.log(cityComponent);
+
   return cityComponent;
 };
 const mapStateToProps = ({

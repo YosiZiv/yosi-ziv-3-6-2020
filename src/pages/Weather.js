@@ -47,7 +47,6 @@ const WeatherPage = ({
   const setLocation = () => {
     if (Object.keys(userLocationCache).length) {
       const key = Object.keys(userLocationCache);
-      console.log(key);
 
       formCityInputChange({
         key: key[0],
@@ -85,8 +84,6 @@ const WeatherPage = ({
     // eslint-disable-next-line
   }, [userLocationCache, ready]);
   const onChange = (e) => {
-    console.log(message);
-
     if (message) {
       setMessage(null);
     }
@@ -140,8 +137,6 @@ const WeatherPage = ({
     formCityInputChange({ key: null, value: "" });
   };
   const theme = themeMode === "dark" ? "dark-theme" : "light-theme";
-  console.log(message);
-
   return (
     <div className={"weather-page " + theme}>
       <div className="weather-page-title">

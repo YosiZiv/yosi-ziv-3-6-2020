@@ -4,7 +4,6 @@ import { NavLink } from "react-router-dom";
 import { changeThemeMode } from "../redux/actions/ui";
 import Button from "./Button";
 const Navigation = ({ themeMode, changeThemeMode }) => {
-  console.log(themeMode === "dark");
   const navClass =
     themeMode === "dark" ? "navbar-dark bg-dark" : "navbar-light bg-light";
   return (
