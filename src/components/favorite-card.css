@@ -1,12 +1,11 @@
 .favorite-card {
-  width: 20%;
-  color: #bababa;
-  border: 1px solid #e9e9e9;
-  background: #fcfcfc;
-  border-radius: 1px;
-  padding: 1px;
-  margin: 2px 2px;
+  font-size: 16px;
+  width: 13%;
+  height: 150px;
   text-align: center;
+  color: #bababa;
+  border: 1px solid #aac4ee;
+  background: #566a6d;
 }
 .favorite-card-condition {
   height: 25%;
