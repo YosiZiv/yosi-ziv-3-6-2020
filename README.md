@@ -11,7 +11,7 @@ Project Home Assigment for Twillo
   npm start
 
 ### Prerequisites
-no need any presetup requierd the api_key allready include
+no need any presetup requierd the api_key all ready include
 ### App dependencies
 Frontend: 
 Create React App boundle Axios(Http request) 
@@ -20,7 +20,7 @@ bootstrap(ui)
 
 ### Work Flow: 
 after reading cerfully the assigment request i start to plan a full cache strategy.
-since their is no server couldnt make global server cache request so i use browser localstorage.
+since their is no server on this simple web app i couldnt make global cache system with redis or etc, i use browser localstorage for per user local-storage on browser. its still very useful to load off request from api and fast result on cache match.
 
 ### Techologies architecture
 Web application writting in html css3 javascript with React framework
