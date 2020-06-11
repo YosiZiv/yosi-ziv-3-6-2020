@@ -17,13 +17,8 @@ import {
   setCityCondition,
   setCityForecasts,
 } from "../actions/weather-actions";
-import {
-  setUserLocationCache,
-  setSearchCache,
-  setCityConditionCache,
-  setCityForecastsCache,
-} from "../actions/cache-actions";
-
+import { setCache } from "../actions/cache-actions";
+import { saveCache } from "../../utils";
 const getCitiesStart = ({ dispatch }) => (next) => (action) => {
   if (action.type === GET_CITIES_START) {
     const q = action.payload;
@@ -50,7 +45,13 @@ const getCitesSuccess = ({ dispatch }) => (next) => (action) => {
     const filteredData = payload.map((item) => {
       return { key: item.Key, city: item.LocalizedName };
     });
-    dispatch(setSearchCache({ key: q.toLowerCase(), data: filteredData }));
+    dispatch(
+      setCache({
+        item: "searchCache",
+        key: q.toLowerCase(),
+        data: filteredData,
+      })
+    );
     return dispatch(setSearchResult({ data: filteredData }));
   }
   next(action);
@@ -97,7 +98,13 @@ const getCityForecastsSuccess = ({ dispatch }) => (next) => (action) => {
         },
       };
     });
-    dispatch(setCityForecastsCache({ key: locationKey, data: filterForecast }));
+    dispatch(
+      setCache({
+        item: "forecastsCache",
+        key: locationKey,
+        data: filterForecast,
+      })
+    );
     return dispatch(setCityForecasts({ data: filterForecast }));
   }
   next(action);
@@ -136,7 +143,13 @@ const getCityConditionSuccess = ({ dispatch }) => (next) => (action) => {
         fTemperature: condition.Temperature?.Imperial?.Value,
       };
     });
-    dispatch(setCityConditionCache({ key: locationKey, data: cityCondition }));
+    dispatch(
+      setCache({
+        item: "conditionCache",
+        key: locationKey,
+        data: cityCondition,
+      })
+    );
     return dispatch(setCityCondition({ data: cityCondition }));
   }
   next(action);
@@ -169,7 +182,16 @@ const getCityByLocationSuccess = ({ dispatch }) => (next) => (action) => {
   if (action.type === GET_CITY_BY_LOCATION_SUCCESS) {
     const key = action.payload.Key;
     const cityName = action.payload.LocalizedName;
-    return dispatch(setUserLocationCache({ key, cityName }));
+    saveCache("userLocationCache", { [key]: cityName });
+    return dispatch(
+      setCache([
+        null,
+        null,
+        null,
+        null,
+        { userLocationCache: { [key]: cityName } },
+      ])
+    ); // only update location
   }
   next(action);
 };

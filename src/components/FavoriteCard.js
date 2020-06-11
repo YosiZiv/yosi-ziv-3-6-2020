@@ -1,7 +1,7 @@
 import React from "react";
 import { icons } from "../utils";
 import "./favorite-card.css";
-const FavoriteCard = ({ data, cityName, mode }) => {
+const FavoriteCard = ({ data, cityName, tempMode }) => {
   return (
     <div className="favorite-card">
       <div className="favorite-card-cityname">
@@ -16,7 +16,7 @@ const FavoriteCard = ({ data, cityName, mode }) => {
       </div>
       <div className="favorite-card-temp">
         <p>
-          {mode === "c"
+          {tempMode === "c"
             ? `${Math.round(data[0].cTemperature)}C°`
             : `${Math.round(data[0].fTemperature)}F°`}
         </p>

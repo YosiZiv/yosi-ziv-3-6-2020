@@ -8,8 +8,9 @@
 }
 .input-container label {
   text-align: left;
-  color: #8d9092;
+  color: #ffffff;
   font-size: 10px;
+  margin-left: 2px;
 }
 .input-container select {
   font-size: 10px;
@@ -26,7 +27,6 @@
     font-family: Arial, Helvetica, sans-serif;
   }
   .input-container label {
-    color: #8d9092;
     font-size: 15px;
   }
   .input-container select {

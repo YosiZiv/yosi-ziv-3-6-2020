@@ -1,0 +1,59 @@
+.forecasts-body-card {
+  font-size: 8px;
+  width: 20%;
+  border-radius: 5px;
+  padding: 1px;
+  margin: 2px 2px;
+  text-align: center;
+  height: 80px;
+}
+.dark-mode {
+  transition: all 0.5s;
+  color: #bababa;
+  border: 1px solid #aac4ee;
+  background: #566a6d;
+}
+.light-mode {
+  transition: background-color 0.5s;
+
+  border: 1px solid #aac4ee;
+}
+
+.forecasts-body-card:hover {
+  background: #5e8086;
+}
+.forecasts-body-card p {
+  margin: 0;
+  height: 35%;
+}
+.forecasts-body-card i {
+  font-size: 13px;
+}
+.forecasts-body-card-temp {
+  display: block;
+  height: 40%;
+}
+
+.forecasts-body-card-max {
+  color: #878787;
+}
+
+@media screen and (min-width: 600px) {
+  .forecasts-body-card {
+    font-size: 16px;
+    width: 13%;
+    height: 150px;
+  }
+
+  .forecasts-body-card-temp {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .forecasts-body-card i {
+    font-size: 33px;
+  }
+  .forecasts-body-card-temp p {
+    padding: 0 2px;
+  }
+}

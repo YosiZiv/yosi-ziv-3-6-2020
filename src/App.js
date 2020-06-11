@@ -4,26 +4,11 @@ import { connect } from "react-redux";
 import Navigation from "./components/Navigation";
 import Weather from "./pages/Weather";
 import Favorites from "./pages/Favorites";
-import {
-  setFavoritesCache,
-  setSearchCache,
-  setCityForecastsCache,
-  setCityConditionCache,
-  setUserLocationCache,
-  setCacheReady,
-} from "./redux/actions/cache-actions";
+import { setCache, setCacheReady } from "./redux/actions/cache-actions";
 import { getCityByLocation } from "./redux/actions/weather-actions";
 import "./App.css";
 
-function App({
-  setSearchCache,
-  setCityForecastsCache,
-  setCityConditionCache,
-  setFavoritesCache,
-  getCityByLocation,
-  setUserLocationCache,
-  setCacheReady,
-}) {
+function App({ setCache, getCityByLocation, setCacheReady }) {
   const setLocation = () => {
     const userLocationCache =
       JSON.parse(localStorage.getItem("userLocationCache")) || {};
@@ -34,10 +19,11 @@ function App({
           log: position.coords.longitude,
         };
         getCityByLocation(data);
+        return null;
       });
     }
     if (Object.keys(userLocationCache).length) {
-      setUserLocationCache(userLocationCache);
+      return userLocationCache;
     }
   };
   const setInitData = () => {
@@ -59,15 +45,30 @@ function App({
       localStorage.setItem("conditionCache", JSON.stringify(conditionCache));
       localStorage.setItem("favoritesCache", JSON.stringify(favoritesCache));
     }
-    setSearchCache({ item: searchCache });
-    setCityForecastsCache({ item: forecastsCache });
-    setCityConditionCache({ item: conditionCache });
-    setFavoritesCache({ item: favoritesCache });
+    const userLocationCache = setLocation();
+    console.log(userLocationCache);
+
+    userLocationCache
+      ? setCache([
+          { searchCache },
+          { forecastsCache },
+          { conditionCache },
+          { favoritesCache },
+          { userLocationCache },
+        ])
+      : setCache([
+          { searchCache },
+          { forecastsCache },
+          { conditionCache },
+          { favoritesCache },
+        ]);
+
     setCacheReady();
   };
+
   useEffect(() => {
     setInitData();
-    setLocation();
+    // eslint-disable-next-line
   }, []);
   const routes = (
     <Switch>
@@ -91,11 +92,7 @@ const mapStateToProps = ({ cacheReducer: { userLocationCache, ready } }) => {
 };
 
 export default connect(mapStateToProps, {
-  setSearchCache,
-  setCityForecastsCache,
-  setCityConditionCache,
-  setFavoritesCache,
-  setUserLocationCache,
+  setCache,
   getCityByLocation,
   setCacheReady,
 })(App);

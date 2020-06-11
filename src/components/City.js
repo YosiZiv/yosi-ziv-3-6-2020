@@ -1,58 +1,46 @@
 import React from "react";
-import { icons } from "../utils";
+
+import ForecastCard from "./ForecastsCard";
 import "./city.css";
 const City = ({
   city,
   cityName,
   favorite,
   toggleFavoritesHandler,
-  mode,
-  modeChange,
+  tempMode,
+  tempModeChange,
+  closeModel,
+  themeMode,
 }) => {
-  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const forecasts = city?.cityForecasts?.map((forecast) => {
-    const date = new Date(forecast.date).getDay();
     return (
-      <div className="forecasts-body-card" key={forecast.date}>
-        <p>{days[date]}</p>
-        <i
-          className={
-            icons[forecast.day.condition.replace(/\s/g, "")] || icons.default
-          }
-        ></i>
-        <div className="forecasts-body-card-temp">
-          <p className="forecasts-body-card-min">
-            {mode === "c"
-              ? `${Math.round((5 / 9) * (forecast.night.temperature - 32))}C°`
-              : `${Math.round(forecast.night.temperature)}F°`}
-          </p>
-          <p className="forecasts-body-card-max">
-            {mode === "c"
-              ? `${Math.round((5 / 9) * (forecast.day.temperature - 32))}C°`
-              : `${Math.round(forecast.day.temperature)}F°`}
-          </p>
-        </div>
-      </div>
+      <ForecastCard
+        themeMode={themeMode}
+        key={forecast.date}
+        tempMode={tempMode}
+        forecast={forecast}
+      />
     );
   });
+  const theme = themeMode === "dark" ? "dark-theme-card" : "light-theme-card";
   return (
-    <div className="forecasts-container">
+    <div className={"forecasts-container " + theme}>
       <div className="forecasts-menu">
-        <div className="forecasts-menu-close">
+        <div onClick={closeModel} className="forecasts-menu-close">
           <i className="fas fa-times"></i>
         </div>
         <div className="forecasts-menu-city">
           <div className="forecasts-menu-city-temp">
             <p
-              className={mode === "c" ? "active" : ""}
-              onClick={() => modeChange("c")}
+              className={tempMode === "c" ? "active" : ""}
+              onClick={() => tempModeChange("c")}
             >
               C°
             </p>
             |
             <p
-              className={mode === "f" ? "active" : ""}
-              onClick={() => modeChange("f")}
+              className={tempMode === "f" ? "active" : ""}
+              onClick={() => tempModeChange("f")}
             >
               F°
             </p>
@@ -73,7 +61,7 @@ const City = ({
       <div className="forecasts-body">
         <p>{cityName}</p>
         <p>
-          {mode === "c"
+          {tempMode === "c"
             ? `${city.cityCondition[0].cTemperature}`
             : `${city.cityCondition[0].fTemperature}`}
         </p>

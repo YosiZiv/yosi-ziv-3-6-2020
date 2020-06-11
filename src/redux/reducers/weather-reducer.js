@@ -3,7 +3,7 @@ import {
   SET_SEARCH_RESULT,
   SET_CITY_FORECASTS,
   SET_CITY_CONDITION,
-  SET_MODE,
+  SET_TEMP_MODE,
 } from "../actions/weather-actions";
 const initState = {
   searchCity: { value: "", error: null },
@@ -13,7 +13,7 @@ const initState = {
     cityCondition: null,
     cityForecasts: null,
   },
-  mode: "c",
+  tempMode: "c",
 };
 
 export default function weatherReducer(state = initState, action) {
@@ -59,10 +59,10 @@ export default function weatherReducer(state = initState, action) {
         },
       };
     }
-    case SET_MODE: {
+    case SET_TEMP_MODE: {
       return {
         ...state,
-        mode: action.payload,
+        tempMode: action.payload,
       };
     }
     default:

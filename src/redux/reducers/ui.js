@@ -5,11 +5,13 @@ import {
   DELETE_MESSAGE,
   CLEAR_UI,
   REDIRECT,
+  CHANGE_THEME_MODE,
 } from "../actions/ui";
 const initState = {
   loading: false,
   messages: {},
   redirect: null,
+  themeMode: "dark",
 };
 
 export default function ui(state = initState, action) {
@@ -29,6 +31,10 @@ export default function ui(state = initState, action) {
     case DELETE_MESSAGE: {
       delete state.messages[action.payload];
       return { ...state, messages: state.messages };
+    }
+    case CHANGE_THEME_MODE: {
+      const themeMode = state.themeMode === "dark" ? "light" : "dark";
+      return { ...state, themeMode };
     }
     case CLEAR_UI: {
       return {
