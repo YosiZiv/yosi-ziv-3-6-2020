@@ -50,39 +50,3 @@
 .forecasts-body p {
   padding: 0 2px;
 }
-.forecasts-body-card {
-  font-size: 10px;
-  width: 20%;
-  color: #bababa;
-  border: 1px solid #e9e9e9;
-  background: #fcfcfc;
-  border-radius: 1px;
-  padding: 1px;
-  margin: 2px 2px;
-  text-align: center;
-}
-
-.forecasts-body-card p {
-  margin: 0;
-}
-.forecasts-body-card-temp {
-  margin: 1px;
-}
-.forecasts-body-card-temp p {
-  margin: 1px 1px;
-}
-.forecasts-body-card-max {
-  color: #878787;
-}
-@media screen and (min-width: 600px) {
-  .forecasts-body-card {
-    font-size: 16px;
-  }
-  .forecasts-body-card-temp {
-    display: flex;
-    justify-content: center;
-  }
-  .forecasts-body-card-temp p {
-    padding: 0 2px;
-  }
-}

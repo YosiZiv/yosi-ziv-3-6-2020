@@ -1,5 +1,6 @@
 import React from "react";
-import { icons } from "../utils";
+
+import ForecastCard from "./ForecastsCard";
 import "./city.css";
 const City = ({
   city,
@@ -9,31 +10,8 @@ const City = ({
   mode,
   modeChange,
 }) => {
-  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const forecasts = city?.cityForecasts?.map((forecast) => {
-    const date = new Date(forecast.date).getDay();
-    return (
-      <div className="forecasts-body-card" key={forecast.date}>
-        <p>{days[date]}</p>
-        <i
-          className={
-            icons[forecast.day.condition.replace(/\s/g, "")] || icons.default
-          }
-        ></i>
-        <div className="forecasts-body-card-temp">
-          <p className="forecasts-body-card-min">
-            {mode === "c"
-              ? `${Math.round((5 / 9) * (forecast.night.temperature - 32))}C°`
-              : `${Math.round(forecast.night.temperature)}F°`}
-          </p>
-          <p className="forecasts-body-card-max">
-            {mode === "c"
-              ? `${Math.round((5 / 9) * (forecast.day.temperature - 32))}C°`
-              : `${Math.round(forecast.day.temperature)}F°`}
-          </p>
-        </div>
-      </div>
-    );
+    return <ForecastCard mode={mode} forecast={forecast} />;
   });
   return (
     <div className="forecasts-container">

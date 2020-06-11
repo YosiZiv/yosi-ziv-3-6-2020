@@ -1,0 +1,49 @@
+.forecasts-body-card {
+  font-size: 8px;
+  width: 20%;
+  color: #bababa;
+  border: 1px solid #aac4ee;
+  background: #fcfcfc;
+  border-radius: 5px;
+  padding: 1px;
+  margin: 2px 2px;
+  text-align: center;
+  height: 80px;
+}
+.forecasts-body-card:hover {
+  background: #f1f1e3;
+}
+.forecasts-body-card p {
+  margin: 0;
+  height: 35%;
+}
+.forecasts-body-card i {
+  font-size: 13px;
+}
+.forecasts-body-card-temp {
+  display: block;
+  height: 40%;
+}
+
+.forecasts-body-card-max {
+  color: #878787;
+}
+@media screen and (min-width: 600px) {
+  .forecasts-body-card {
+    font-size: 16px;
+    width: 13%;
+    height: 150px;
+  }
+
+  .forecasts-body-card-temp {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .forecasts-body-card i {
+    font-size: 33px;
+  }
+  .forecasts-body-card-temp p {
+    padding: 0 2px;
+  }
+}
