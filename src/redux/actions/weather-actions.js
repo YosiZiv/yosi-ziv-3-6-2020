@@ -3,7 +3,7 @@ export const SET_SEARCH_RESULT = "[weather] set search result";
 export const SET_CURRENT_CITY = "[weather] set current city";
 export const SET_CITY_CONDITION = "[weather] set city Condition";
 export const SET_CITY_FORECASTS = "[weather] set city forecasts";
-export const SET_MODE = "[weather]set mode";
+export const SET_TEMP_MODE = "[weather]set temp mode";
 
 // async actions
 export const GET_CITIES_START = "[weather] get cities start";
@@ -57,7 +57,7 @@ export const setCityCondition = (payload) => ({
   type: SET_CITY_CONDITION,
   payload,
 });
-export const setMode = (payload) => ({
-  type: SET_MODE,
+export const setTempMode = (payload) => ({
+  type: SET_TEMP_MODE,
   payload,
 });

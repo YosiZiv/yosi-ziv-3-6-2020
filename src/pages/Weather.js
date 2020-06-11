@@ -15,7 +15,7 @@ import {
   setSearchResult,
   getCityCondition,
   setCityCondition,
-  setMode,
+  setTempMode,
 } from "../redux/actions/weather-actions";
 import { toggleFavorites } from "../redux/actions/cache-actions";
 const WeatherPage = ({
@@ -28,7 +28,8 @@ const WeatherPage = ({
   searchCity,
   setSearchResult,
   city,
-  mode,
+  tempMode,
+  themeMode,
   ready,
   getCities,
   formCityInputChange,
@@ -37,7 +38,7 @@ const WeatherPage = ({
   getCityCondition,
   setCityCondition,
   toggleFavorites,
-  setMode,
+  setTempMode,
 }) => {
   const validation = {
     isRequired: true,
@@ -45,20 +46,22 @@ const WeatherPage = ({
   };
   const setLocation = () => {
     if (Object.keys(userLocationCache).length) {
-      const { key, cityName } = userLocationCache;
+      const key = Object.keys(userLocationCache);
+      console.log(key);
+
       formCityInputChange({
-        key,
-        value: cityName,
+        key: key[0],
+        value: userLocationCache[key],
         validation,
       });
-      if (conditionCache[key] && forecastsCache[key]) {
-        setCityCondition({ data: conditionCache[key] });
+      if (conditionCache[key[0]] && forecastsCache[key[0]]) {
+        setCityCondition({ data: conditionCache[key[0]] });
         return setCityForecasts({
-          data: forecastsCache[key],
+          data: forecastsCache[key[0]],
         });
       }
-      getCityCondition(key);
-      return getCityForecasts(key);
+      getCityCondition(key[0]);
+      return getCityForecasts(key[0]);
     }
     if (!Object.keys(userLocationCache).length && ready) {
       const telAvivKey = "215805";
@@ -77,9 +80,10 @@ const WeatherPage = ({
       return getCityForecasts(telAvivKey);
     }
   };
-  // useEffect(() => {
-  //   setLocation();
-  // }, [userLocationCache, ready]);
+  useEffect(() => {
+    setLocation();
+    // eslint-disable-next-line
+  }, [userLocationCache, ready]);
   const onChange = (e) => {
     setSearchResult({ data: [] });
     setCityCondition({ data: null });
@@ -122,11 +126,17 @@ const WeatherPage = ({
   const toggleFavoritesHandler = ({ cityName, key }) => {
     toggleFavorites({ cityName, key });
   };
-  const modeChange = (mode) => {
-    setMode(mode);
+  const tempModeChange = (tempMode) => {
+    setTempMode(tempMode);
   };
+  const closeModel = () => {
+    setCityCondition({ data: null });
+    setCityForecasts({ data: null });
+    formCityInputChange({ key: null, value: "" });
+  };
+  const theme = themeMode === "dark" ? "dark-theme" : "light-theme";
   return (
-    <div className="weather-page">
+    <div className={"weather-page " + theme}>
       <div className="weather-page-title">
         <h1>Search city</h1>
       </div>
@@ -148,12 +158,14 @@ const WeatherPage = ({
       {city.cityForecasts && (
         <div>
           <City
-            mode={mode}
-            modeChange={modeChange}
+            closeModel={closeModel}
+            tempMode={tempMode}
+            tempModeChange={tempModeChange}
             toggleFavoritesHandler={toggleFavoritesHandler}
             favorite={favoritesCache[searchCity.value]}
             cityName={searchCity.value}
             city={city}
+            themeMode={themeMode}
           />
         </div>
       )}
@@ -162,7 +174,7 @@ const WeatherPage = ({
 };
 
 const mapStateToProps = ({
-  weatherReducer: { searchCity, searchResult, city, mode },
+  weatherReducer: { searchCity, searchResult, city, tempMode },
   cacheReducer: {
     searchCache,
     forecastsCache,
@@ -171,18 +183,20 @@ const mapStateToProps = ({
     userLocationCache,
     ready,
   },
+  ui: { themeMode },
 }) => {
   return {
     searchCity,
     searchResult,
     city,
-    mode,
     searchCache,
     conditionCache,
     forecastsCache,
     favoritesCache,
     userLocationCache,
     ready,
+    tempMode,
+    themeMode,
   };
 };
 
@@ -196,5 +210,5 @@ export default connect(mapStateToProps, {
   setCityForecasts,
   setCityCondition,
   toggleFavorites,
-  setMode,
+  setTempMode,
 })(WeatherPage);
