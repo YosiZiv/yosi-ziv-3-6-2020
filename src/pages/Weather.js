@@ -18,6 +18,7 @@ import {
   setTempMode,
 } from "../redux/actions/weather-actions";
 import { toggleFavorites } from "../redux/actions/cache-actions";
+import { setMessage } from "../redux/actions/ui";
 const WeatherPage = ({
   searchCache,
   conditionCache,
@@ -37,6 +38,7 @@ const WeatherPage = ({
   setCityCondition,
   toggleFavorites,
   setTempMode,
+  setMessage,
 }) => {
   const validation = {
     isRequired: true,
@@ -83,6 +85,11 @@ const WeatherPage = ({
     // eslint-disable-next-line
   }, [userLocationCache, ready]);
   const onChange = (e) => {
+    console.log(message);
+
+    if (message) {
+      setMessage(null);
+    }
     setSearchResult({ data: [] });
     setCityCondition({ data: null });
     setCityForecasts({ data: null });
@@ -133,6 +140,8 @@ const WeatherPage = ({
     formCityInputChange({ key: null, value: "" });
   };
   const theme = themeMode === "dark" ? "dark-theme" : "light-theme";
+  console.log(message);
+
   return (
     <div className={"weather-page " + theme}>
       <div className="weather-page-title">
@@ -161,6 +170,9 @@ const WeatherPage = ({
         toggleFavoritesHandler={toggleFavoritesHandler}
         favorite={favoritesCache[searchCity.value]}
       />
+      {message && (
+        <h1 style={{ textAlign: "center", marginTop: "50px" }}>{message}</h1>
+      )}
     </div>
   );
 };
@@ -201,4 +213,5 @@ export default connect(mapStateToProps, {
   setCityCondition,
   toggleFavorites,
   setTempMode,
+  setMessage,
 })(WeatherPage);

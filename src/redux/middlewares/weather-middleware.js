@@ -18,6 +18,7 @@ import {
   setCityForecasts,
 } from "../actions/weather-actions";
 import { setCache } from "../actions/cache-actions";
+import { setMessage } from "../actions/ui";
 import { saveCache } from "../../utils";
 const getCitiesStart = ({ dispatch }) => (next) => (action) => {
   if (action.type === GET_CITIES_START) {
@@ -58,6 +59,7 @@ const getCitesSuccess = ({ dispatch }) => (next) => (action) => {
 };
 const getCitesFail = ({ dispatch }) => (next) => (action) => {
   if (action.type === GET_CITIES_FAIL) {
+    return dispatch(setMessage("someting went strong :/"));
   }
   next(action);
 };
@@ -111,6 +113,7 @@ const getCityForecastsSuccess = ({ dispatch }) => (next) => (action) => {
 };
 const getCityForecastsFail = ({ dispatch }) => (next) => (action) => {
   if (action.type === GET_CITY_FORECASTS_FAIL) {
+    return dispatch(setMessage("someting went strong :/"));
   }
   next(action);
 };
@@ -158,6 +161,8 @@ const getCityConditionSuccess = ({ dispatch }) => (next) => (action) => {
 const getCityConditionFail = ({ dispatch }) => (next) => (action) => {
   if (action.type === GET_CITY_FORECASTS_FAIL) {
     // TODO handle api bad request
+
+    return dispatch(setMessage("someting went strong :/"));
   }
   next(action);
 };
@@ -197,6 +202,7 @@ const getCityByLocationSuccess = ({ dispatch }) => (next) => (action) => {
 };
 const getCityByLocationFail = ({ dispatch }) => (next) => (action) => {
   if (action.type === GET_CITY_BY_LOCATION_FAIL) {
+    return dispatch(setMessage("someting went strong :/"));
   }
   next(action);
 };

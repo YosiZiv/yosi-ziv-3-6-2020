@@ -2,7 +2,6 @@ export const LOADING_START = "[UI] Loading Start";
 export const LOADING_FINISH = "[UI] Loading Finish";
 export const SET_MESSAGE = "[UI] Message";
 export const REDIRECT = "[UI] Redirect";
-export const DELETE_MESSAGE = "[UI] Delete Message";
 export const CLEAR_UI = "[UI] clear ui";
 export const CHANGE_THEME_MODE = "[ui] change theme mode";
 
@@ -19,10 +18,7 @@ export const setMessage = (payload) => ({
   type: SET_MESSAGE,
   payload,
 });
-export const deleteMessage = (payload) => ({
-  type: DELETE_MESSAGE,
-  payload,
-});
+
 export const redirect = (payload) => ({
   type: REDIRECT,
   payload,
