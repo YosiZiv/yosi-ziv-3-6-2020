@@ -1,8 +1,14 @@
 import React from "react";
+import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
-export default function Navigation() {
+import { changeThemeMode } from "../redux/actions/ui";
+import Button from "./Button";
+const Navigation = ({ themeMode, changeThemeMode }) => {
+  console.log(themeMode === "dark");
+  const navClass =
+    themeMode === "dark" ? "navbar-dark bg-dark" : "navbar-light bg-light";
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+    <nav className={"navbar navbar-expand-lg " + navClass}>
       <NavLink className="nav-item nav-link" to="/">
         WeatherApp
       </NavLink>
@@ -35,7 +41,21 @@ export default function Navigation() {
             Favorites
           </NavLink>
         </div>
+        <div style={{ marginTop: "6px", marginLeft: "65%" }}>
+          <Button
+            themeMode={themeMode}
+            onClick={changeThemeMode}
+            text={themeMode === "dark" ? "Light Mode" : "Dark Mode"}
+          />
+        </div>
       </div>
     </nav>
   );
-}
+};
+const mapStateToProps = ({ ui: { themeMode } }) => {
+  return {
+    themeMode,
+  };
+};
+
+export default connect(mapStateToProps, { changeThemeMode })(Navigation);

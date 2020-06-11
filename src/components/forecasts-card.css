@@ -1,17 +1,26 @@
 .forecasts-body-card {
   font-size: 8px;
   width: 20%;
-  color: #bababa;
-  border: 1px solid #aac4ee;
-  background: #fcfcfc;
   border-radius: 5px;
   padding: 1px;
   margin: 2px 2px;
   text-align: center;
   height: 80px;
 }
+.dark-mode {
+  transition: all 0.5s;
+  color: #bababa;
+  border: 1px solid #aac4ee;
+  background: #566a6d;
+}
+.light-mode {
+  transition: background-color 0.5s;
+
+  border: 1px solid #aac4ee;
+}
+
 .forecasts-body-card:hover {
-  background: #f1f1e3;
+  background: #5e8086;
 }
 .forecasts-body-card p {
   margin: 0;
@@ -28,6 +37,7 @@
 .forecasts-body-card-max {
   color: #878787;
 }
+
 @media screen and (min-width: 600px) {
   .forecasts-body-card {
     font-size: 16px;

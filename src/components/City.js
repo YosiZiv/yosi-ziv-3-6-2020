@@ -7,30 +7,40 @@ const City = ({
   cityName,
   favorite,
   toggleFavoritesHandler,
-  mode,
-  modeChange,
+  tempMode,
+  tempModeChange,
+  closeModel,
+  themeMode,
 }) => {
   const forecasts = city?.cityForecasts?.map((forecast) => {
-    return <ForecastCard mode={mode} forecast={forecast} />;
+    return (
+      <ForecastCard
+        themeMode={themeMode}
+        key={forecast.date}
+        tempMode={tempMode}
+        forecast={forecast}
+      />
+    );
   });
+  const theme = themeMode === "dark" ? "dark-theme-card" : "light-theme-card";
   return (
-    <div className="forecasts-container">
+    <div className={"forecasts-container " + theme}>
       <div className="forecasts-menu">
-        <div className="forecasts-menu-close">
+        <div onClick={closeModel} className="forecasts-menu-close">
           <i className="fas fa-times"></i>
         </div>
         <div className="forecasts-menu-city">
           <div className="forecasts-menu-city-temp">
             <p
-              className={mode === "c" ? "active" : ""}
-              onClick={() => modeChange("c")}
+              className={tempMode === "c" ? "active" : ""}
+              onClick={() => tempModeChange("c")}
             >
               C°
             </p>
             |
             <p
-              className={mode === "f" ? "active" : ""}
-              onClick={() => modeChange("f")}
+              className={tempMode === "f" ? "active" : ""}
+              onClick={() => tempModeChange("f")}
             >
               F°
             </p>
@@ -51,7 +61,7 @@ const City = ({
       <div className="forecasts-body">
         <p>{cityName}</p>
         <p>
-          {mode === "c"
+          {tempMode === "c"
             ? `${city.cityCondition[0].cTemperature}`
             : `${city.cityCondition[0].fTemperature}`}
         </p>
